@@ -1,24 +1,23 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ message: "Get all income" });
-});
+const Income = require("../models/incomeModel");
+const {
+  getIncome,
+  getIncomes,
+  createIncome,
+  deleteIncome,
+  updateIncome,
+} = require("../controllers/incomeController");
 
-router.get("/:id", (req, res) => {
-  res.json({ message: "Get a single income" });
-});
+router.get("/", getIncomes);
 
-router.post("/", (req, res) => {
-  res.json({ message: "Create new income" });
-});
+router.get("/:id", getIncome);
 
-router.delete("/:id", (req, res) => {
-  res.json({ message: "Delete an income" });
-});
+router.post("/", createIncome);
 
-router.patch("/:id", (req, res) => {
-  res.json({ message: "Update an income" });
-});
+router.delete("/:id", deleteIncome);
+
+router.patch("/:id", updateIncome);
 
 module.exports = router;
