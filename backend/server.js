@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const incomeRoutes = require("./routes/incomeRoutes");
+const expenseRoutes = require("./routes/expenseRoutes");
 
 const port = process.env.PORT || 4000;
 
@@ -10,6 +11,8 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/income", incomeRoutes);
+
+app.use("/api/expense", expenseRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
