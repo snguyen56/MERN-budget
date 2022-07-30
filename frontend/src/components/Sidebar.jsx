@@ -6,9 +6,9 @@ export default function Sidebar() {
       <style type="text/css">
         {`
     .list-group-item {
-        background-color: inherit;
-      padding: 1rem 1.5rem;
+      background-color: inherit;
       font-size: 1.5rem;
+      text-align: center;
     }
     `}
       </style>

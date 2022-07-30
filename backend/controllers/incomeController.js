@@ -38,7 +38,7 @@ const deleteIncome = async (req, res) => {
   if (!income) {
     return res.status(400).json({ error: "Income not found" });
   }
-  res.status(200), json(income);
+  res.status(200).json(income);
 };
 
 const updateIncome = async (req, res) => {
