@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import Table from "react-bootstrap/Table";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+
+import IncomeDetails from "../components/IncomeDetails";
 
 export default function Dashboard() {
   const [incomes, setIncomes] = useState(null);
@@ -18,25 +22,42 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <Container>
-      <h1>Main content</h1>
-      <Table bordered hover responsive>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {incomes &&
-            incomes.map((income) => (
-              <tr key={income._id}>
-                <td>{income.title}</td>
-                <td>${income.amount}</td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+    <Container fluid>
+      <Row className="my-4">
+        <Col xs={8}>
+          <Card style={{ height: "45vh" }}>
+            <Card.Body>Graph here</Card.Body>
+          </Card>
+        </Col>
+        <Col
+          style={{
+            display: "flex",
+            flexFlow: "column wrap",
+            justifyContent: "space-between",
+          }}
+        >
+          <Card style={{ height: "21vh" }}>
+            <Card.Body>Data here</Card.Body>
+          </Card>
+          <Card style={{ height: "21vh" }}>
+            <Card.Body>Data here</Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <Row className="my-4">
+        <Col xs={6}>
+          <Card style={{ height: "40vh" }}>
+            <Card.Title>Recent Income</Card.Title>
+            <IncomeDetails incomes={incomes}></IncomeDetails>
+          </Card>
+        </Col>
+        <Col xs={6}>
+          <Card style={{ height: "40vh" }}>
+            <Card.Title>Recent Expenses</Card.Title>
+            <IncomeDetails incomes={incomes}></IncomeDetails>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 }

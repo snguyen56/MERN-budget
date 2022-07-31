@@ -16,3 +16,12 @@
   width: calc(100% - 250px);
   text-align: center;
 }
+
+.card-sm {
+  height: 25vh;
+}
+
+.card-lg {
+  height: 5000000px;
+  background-color: aqua;
+}

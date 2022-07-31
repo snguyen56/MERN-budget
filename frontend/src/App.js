@@ -13,9 +13,7 @@ function App() {
         <Sidebar />
       </div>
       <div className="content">
-        <Container>
-          <Dashboard />
-        </Container>
+        <Dashboard />
       </div>
     </div>
   );
