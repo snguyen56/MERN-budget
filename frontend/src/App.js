@@ -2,8 +2,6 @@ import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 
-import Container from "react-bootstrap/Container";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {

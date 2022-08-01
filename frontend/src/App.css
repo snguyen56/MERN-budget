@@ -12,7 +12,8 @@
 }
 
 .content {
-  margin-left: 250px;
+  margin-left: 260px;
+  margin-right: 10px;
   width: calc(100% - 250px);
   text-align: center;
 }

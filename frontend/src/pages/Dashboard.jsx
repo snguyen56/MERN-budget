@@ -24,7 +24,7 @@ export default function Dashboard() {
   return (
     <Container fluid>
       <Row className="my-4">
-        <Col xs={8}>
+        <Col sm={12} md={8}>
           <Card style={{ height: "45vh" }}>
             <Card.Body>Graph here</Card.Body>
           </Card>
@@ -45,14 +45,14 @@ export default function Dashboard() {
         </Col>
       </Row>
       <Row className="my-4">
-        <Col xs={6}>
-          <Card style={{ height: "40vh" }}>
+        <Col sm={12} md={6}>
+          <Card style={{ height: "47vh" }}>
             <Card.Title>Recent Income</Card.Title>
             <IncomeDetails incomes={incomes}></IncomeDetails>
           </Card>
         </Col>
-        <Col xs={6}>
-          <Card style={{ height: "40vh" }}>
+        <Col sm={12} md={6}>
+          <Card style={{ height: "47vh" }}>
             <Card.Title>Recent Expenses</Card.Title>
             <IncomeDetails incomes={incomes}></IncomeDetails>
           </Card>
@@ -61,3 +61,5 @@ export default function Dashboard() {
     </Container>
   );
 }
+
+// use 100% height on the child of the flexbox to get it to the same height instead of vh (on the cards under col)
