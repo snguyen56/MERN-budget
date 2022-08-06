@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
+import { Container, Button } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-
+import "../App.scss";
 import IncomeDetails from "../components/IncomeDetails";
 
 export default function Dashboard() {
@@ -27,6 +27,7 @@ export default function Dashboard() {
         <Col xs={8}>
           <Card style={{ height: "45vh" }}>
             <Card.Body>Graph here</Card.Body>
+            <Button variant="primary"></Button>
           </Card>
         </Col>
         <Col

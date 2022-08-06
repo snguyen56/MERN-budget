@@ -1,3 +1,4 @@
+// import "./App.scss";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
