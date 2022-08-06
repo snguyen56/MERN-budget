@@ -9,6 +9,7 @@ export default function IncomeDetails(props) {
             <tr>
               <th>Title</th>
               <th>Amount</th>
+              <th>Category</th>
             </tr>
           </thead>
           <tbody>
@@ -16,6 +17,7 @@ export default function IncomeDetails(props) {
               <tr key={income._id}>
                 <td>{income.title}</td>
                 <td>${income.amount}</td>
+                <td>{income.category}</td>
               </tr>
             ))}
           </tbody>

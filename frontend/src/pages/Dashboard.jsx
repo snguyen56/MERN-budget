@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 
 import IncomeDetails from "../components/IncomeDetails";
+import IncomeForm from "../components/IncomeForm";
 
 export default function Dashboard() {
   const [incomes, setIncomes] = useState(null);
@@ -36,8 +37,10 @@ export default function Dashboard() {
             justifyContent: "space-between",
           }}
         >
-          <Card style={{ height: "21vh" }}>
-            <Card.Body>Data here</Card.Body>
+          <Card>
+            <Card.Body>
+              <IncomeForm />
+            </Card.Body>
           </Card>
           <Card style={{ height: "21vh" }}>
             <Card.Body>Data here</Card.Body>

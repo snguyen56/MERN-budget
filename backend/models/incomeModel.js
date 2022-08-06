@@ -12,6 +12,14 @@ const incomeSchema = new Schema(
       type: Number,
       required: true,
     },
+    category: {
+      type: String,
+      default: "Misc",
+    },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true }
 );
