@@ -1,8 +1,7 @@
-import "./App.css";
+import "./App.scss";
+import "./custom.scss";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
-
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

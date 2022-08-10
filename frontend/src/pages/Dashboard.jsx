@@ -27,7 +27,7 @@ export default function Dashboard() {
       <Row className="my-4">
         <Col sm={12} md={8}>
           <Card style={{ height: "45vh" }}>
-            <Card.Body>Graph here</Card.Body>
+            <Card.Title>Graph here</Card.Title>
           </Card>
         </Col>
         <Col
@@ -37,13 +37,11 @@ export default function Dashboard() {
             justifyContent: "space-between",
           }}
         >
-          <Card>
-            <Card.Body>
-              <IncomeForm />
-            </Card.Body>
+          <Card style={{ height: "21vh" }}>
+            <Card.Title>Data here</Card.Title>
           </Card>
           <Card style={{ height: "21vh" }}>
-            <Card.Body>Data here</Card.Body>
+            <Card.Title>Data here</Card.Title>
           </Card>
         </Col>
       </Row>
@@ -51,18 +49,26 @@ export default function Dashboard() {
         <Col sm={12} md={6}>
           <Card style={{ height: "47vh" }}>
             <Card.Title>Recent Income</Card.Title>
-            <IncomeDetails incomes={incomes}></IncomeDetails>
+            <Card.Body>
+              <IncomeDetails incomes={incomes} />
+            </Card.Body>
+            <Card.Footer>
+              <IncomeForm />
+            </Card.Footer>
           </Card>
         </Col>
         <Col sm={12} md={6}>
           <Card style={{ height: "47vh" }}>
             <Card.Title>Recent Expenses</Card.Title>
-            <IncomeDetails incomes={incomes}></IncomeDetails>
+            <Card.Body>
+              <IncomeDetails incomes={incomes} />
+            </Card.Body>
+            <Card.Footer>
+              <IncomeForm />
+            </Card.Footer>
           </Card>
         </Col>
       </Row>
     </Container>
   );
 }
-
-// use 100% height on the child of the flexbox to get it to the same height instead of vh (on the cards under col)
