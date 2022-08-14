@@ -19,10 +19,10 @@ const getIncomes = async (req, res) => {
 };
 
 const createIncome = async (req, res) => {
-  const { title, amount } = req.body;
+  const { title, amount, category, date } = req.body;
 
   try {
-    const income = await Income.create({ title, amount });
+    const income = await Income.create({ title, amount, category, date });
     res.status(200).json(income);
   } catch (error) {
     res.status(400).json({ error: error.message });
