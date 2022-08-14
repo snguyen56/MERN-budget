@@ -1,5 +1,6 @@
 import "./App.scss";
 import "./custom.scss";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 
