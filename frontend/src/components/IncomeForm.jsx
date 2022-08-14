@@ -1,3 +1,5 @@
+import { useIncomeContext } from "../hooks/useIncomeContext";
+
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -5,6 +7,8 @@ import Modal from "react-bootstrap/Modal";
 const { useState } = require("react");
 
 const IncomeForm = () => {
+  const { dispatch } = useIncomeContext();
+
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Misc");
@@ -39,6 +43,7 @@ const IncomeForm = () => {
       setError(null);
       console.log("new income added:", json);
       setShow(false);
+      dispatch({ type: "CREATE_INCOME", payload: json });
     }
   };
   return (
@@ -48,7 +53,7 @@ const IncomeForm = () => {
       </Button>
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleSubmit}>
-          <Modal.Header closeButton>
+          <Modal.Header>
             <Modal.Title>Add Income</Modal.Title>
           </Modal.Header>
           <Modal.Body>

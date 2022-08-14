@@ -1,25 +1,35 @@
 import { useEffect, useState } from "react";
+import { useIncomeContext } from "../hooks/useIncomeContext";
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 
-import IncomeDetails from "../components/IncomeDetails";
+import Details from "../components/Details";
 import IncomeForm from "../components/IncomeForm";
 
 export default function Dashboard() {
-  const [incomes, setIncomes] = useState(null);
+  const { incomes, dispatch } = useIncomeContext();
+
+  const [expenses, setExpenses] = useState(null);
 
   useEffect(() => {
-    const fetchIncomes = async () => {
-      const response = await fetch("/api/income");
-      const json = await response.json();
+    const fetchData = async () => {
+      const incomesResponse = await fetch("/api/income");
+      const expenses = await fetch("/api/expense");
 
-      if (response.ok) {
-        setIncomes(json);
+      const incomeData = await incomesResponse.json();
+      const expenseData = await expenses.json();
+
+      if (incomesResponse.ok) {
+        dispatch({ type: "SET_INCOMES", payload: incomeData });
+      }
+      if (expenses.ok) {
+        setExpenses(expenseData);
       }
     };
-    fetchIncomes();
+    fetchData();
   }, []);
 
   return (
@@ -50,7 +60,7 @@ export default function Dashboard() {
           <Card style={{ height: "47vh" }}>
             <Card.Title>Recent Income</Card.Title>
             <Card.Body>
-              <IncomeDetails incomes={incomes} />
+              <Details incomes={incomes?.slice(0, 8)} />
             </Card.Body>
             <Card.Footer>
               <IncomeForm />
@@ -61,7 +71,7 @@ export default function Dashboard() {
           <Card style={{ height: "47vh" }}>
             <Card.Title>Recent Expenses</Card.Title>
             <Card.Body>
-              <IncomeDetails incomes={incomes} />
+              <Details incomes={expenses} />
             </Card.Body>
             <Card.Footer>
               <IncomeForm />

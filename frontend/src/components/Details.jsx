@@ -1,10 +1,11 @@
 import Table from "react-bootstrap/Table";
 
-export default function IncomeDetails(props) {
+export default function Details(props) {
+  const incomes = props.incomes;
   return (
     <>
-      {props.incomes ? (
-        <Table bordered hover responsive>
+      {incomes && incomes.length > 0 ? (
+        <Table variant="dark" size="" hover responsive>
           <thead>
             <tr>
               <th>Title</th>
@@ -23,7 +24,7 @@ export default function IncomeDetails(props) {
           </tbody>
         </Table>
       ) : (
-        <p>No income found</p>
+        <p>No data found</p>
       )}
     </>
   );
