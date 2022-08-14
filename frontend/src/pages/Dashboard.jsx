@@ -30,7 +30,7 @@ export default function Dashboard() {
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Container fluid>
