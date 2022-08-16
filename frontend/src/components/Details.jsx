@@ -5,8 +5,6 @@ import Table from "react-bootstrap/Table";
 export default function Details(props) {
   const { dispatch } = useIncomeContext();
 
-  const incomes = props.incomes;
-
   const handleClick = async (id) => {
     const response = await fetch("api/income/" + id, {
       method: "DELETE",
@@ -19,7 +17,7 @@ export default function Details(props) {
   };
   return (
     <>
-      {incomes && incomes.length > 0 ? (
+      {props.incomes?.length > 0 ? (
         <Table className="my-0" size="" hover borderless responsive>
           <thead>
             <tr>

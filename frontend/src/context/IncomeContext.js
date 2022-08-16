@@ -4,7 +4,7 @@ export const IncomeContext = createContext();
 
 export const incomeReducer = (state, action) => {
   switch (action.type) {
-    case "SET_INCOMES":
+    case "SET_INCOME":
       return {
         incomes: action.payload,
       };

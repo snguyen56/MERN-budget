@@ -45,7 +45,7 @@ export default function AddForm(props) {
       setError(null);
       console.log("new " + mode + " added:", json);
       setShow(false);
-      dispatch({ type: "CREATE_INCOME", payload: json });
+      dispatch({ type: "CREATE_EXPENSE", payload: json });
     }
   };
   return (

@@ -32,6 +32,12 @@
   }
 }
 
+@include media-breakpoint-down(lg) {
+  .custom-class {
+    margin-top: 12px;
+  }
+}
+
 i {
   cursor: pointer;
 }
