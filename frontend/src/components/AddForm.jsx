@@ -1,4 +1,4 @@
-import { useIncomeContext } from "../hooks/useIncomeContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -7,7 +7,7 @@ import Modal from "react-bootstrap/Modal";
 const { useState } = require("react");
 
 export default function AddForm(props) {
-  const { dispatch } = useIncomeContext();
+  const { dispatchExpense } = useExpenseContext();
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -45,7 +45,7 @@ export default function AddForm(props) {
       setError(null);
       console.log("new " + mode + " added:", json);
       setShow(false);
-      dispatch({ type: "CREATE_EXPENSE", payload: json });
+      dispatchExpense({ type: "CREATE_EXPENSE", payload: json });
     }
   };
   return (

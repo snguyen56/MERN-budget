@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useIncomeContext } from "../hooks/useIncomeContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
 import LineChart from "../components/LineChart";
 
 //bootstrap components
@@ -16,9 +17,8 @@ import AddForm from "../components/AddForm";
 import ExpenseDetails from "../components/ExpenseDetails";
 
 export default function Dashboard() {
-  const { incomes, dispatch } = useIncomeContext();
-
-  const [expenses, setExpenses] = useState(null);
+  const { incomes, dispatch: dispatchIncome } = useIncomeContext();
+  const { expenses, dispatchExpense } = useExpenseContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,14 +29,14 @@ export default function Dashboard() {
       const expenseData = await expensesResponse.json();
 
       if (incomesResponse.ok) {
-        dispatch({ type: "SET_INCOME", payload: incomeData });
+        dispatchIncome({ type: "SET_INCOME", payload: incomeData });
       }
       if (expensesResponse.ok) {
-        setExpenses(expenseData);
+        dispatchExpense({ type: "SET_EXPENSE", payload: expenseData });
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, [dispatchIncome, dispatchExpense]);
 
   return (
     <Container fluid>

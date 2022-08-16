@@ -1,6 +1,20 @@
+import { useExpenseContext } from "../hooks/useExpenseContext";
+
 import Table from "react-bootstrap/Table";
 
 export default function Details(props) {
+  const { dispatchExpense } = useExpenseContext();
+
+  const handleClick = async (id) => {
+    const response = await fetch("api/expense/" + id, {
+      method: "DELETE",
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatchExpense({ type: "DELETE_EXPENSE", payload: json });
+    }
+  };
   return (
     <>
       {props.expenses?.length > 0 ? (
@@ -23,7 +37,10 @@ export default function Details(props) {
                 <td>{new Date(expense.date).toLocaleDateString()}</td>
                 <td className="ps-0">
                   <i className="bi bi-pencil me-2"></i>
-                  <i className="bi bi-trash"></i>
+                  <i
+                    className="bi bi-trash"
+                    onClick={() => handleClick(expense._id)}
+                  ></i>
                 </td>
               </tr>
             ))}
