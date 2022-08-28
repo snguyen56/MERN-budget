@@ -1,4 +1,5 @@
 import ListGroup from "react-bootstrap/ListGroup";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   return (
@@ -13,9 +14,21 @@ export default function Sidebar() {
     `}
       </style>
       <ListGroup variant="flush">
-        <ListGroup.Item>Home</ListGroup.Item>
-        <ListGroup.Item>Income</ListGroup.Item>
-        <ListGroup.Item>Expenses</ListGroup.Item>
+        <ListGroup.Item>
+          <Link to="/">Home</Link>
+        </ListGroup.Item>
+        <ListGroup.Item>
+          <Link to="/income">Income</Link>
+        </ListGroup.Item>
+        <ListGroup.Item>
+          <Link to="/expense">Expense</Link>
+        </ListGroup.Item>
+        <ListGroup.Item>
+          <Link to="/login">Login</Link>
+        </ListGroup.Item>
+        <ListGroup.Item>
+          <Link to="/signup">Signup</Link>
+        </ListGroup.Item>
       </ListGroup>
     </>
   );

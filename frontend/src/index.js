@@ -3,15 +3,15 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { IncomeContextProvider } from "./context/IncomeContext";
-import { authContextProvider } from "./context/authContext";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <authContextProvider>
+    <AuthContextProvider>
       <IncomeContextProvider>
         <App />
       </IncomeContextProvider>
-    </authContextProvider>
+    </AuthContextProvider>
   </React.StrictMode>
 );
