@@ -1,10 +1,8 @@
-import "./App.css";
+import "./App.scss";
+import "./custom.scss";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
-
-import Container from "react-bootstrap/Container";
-
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
@@ -13,9 +11,7 @@ function App() {
         <Sidebar />
       </div>
       <div className="content">
-        <Container>
-          <Dashboard />
-        </Container>
+        <Dashboard />
       </div>
     </div>
   );

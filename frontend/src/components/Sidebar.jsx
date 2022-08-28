@@ -7,6 +7,7 @@ export default function Sidebar() {
         {`
     .list-group-item {
       background-color: inherit;
+      color: #aab8c5;
       font-size: 1.5rem;
       text-align: center;
     }
