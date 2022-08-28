@@ -32,7 +32,7 @@ export default function Details(props) {
             {props.expenses.map((expense) => (
               <tr key={expense._id}>
                 <td>{expense.title}</td>
-                <td>${expense.amount}</td>
+                <td>${Intl.NumberFormat().format(expense.amount)}</td>
                 <td>{expense.category}</td>
                 <td>{new Date(expense.date).toLocaleDateString()}</td>
                 <td className="ps-0">

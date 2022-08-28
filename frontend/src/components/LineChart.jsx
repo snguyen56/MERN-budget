@@ -58,11 +58,13 @@ export default function LineChart() {
         label: "Income",
         data: labels.map(() => Math.floor(Math.random() * 10)),
         backgroundColor: "rgba(53, 162, 235, 0.5)",
+        borderColor: "rgba(53, 162, 235, 0.5)",
       },
       {
         label: "Expenses",
         data: labels.map(() => Math.floor(Math.random() * 10)),
         backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "rgba(255, 99, 132, 0.5)",
       },
     ],
   };
