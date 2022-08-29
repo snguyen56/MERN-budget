@@ -41,15 +41,7 @@ export default function LineChart() {
     },
   };
 
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
+  const labels = ["January", "February", "March", "April", "May"];
 
   const data = {
     labels,

@@ -10,6 +10,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 
 //custom components
 import Details from "../components/Details";
@@ -147,14 +148,29 @@ export default function Dashboard() {
           <Card style={{ height: "47vh" }}>
             <Card.Body>
               <Card.Title>Goals</Card.Title>
+              <ul className="d-flex flex-column mt-3 px-1">
+                <li>
+                  <input type="checkbox" id="goal1" />{" "}
+                  <label htmlFor="goal1">Goal</label>
+                </li>
+                <li>
+                  <input type="checkbox" id="goal2" />{" "}
+                  <label htmlFor="goal2">Goal</label>
+                </li>
+              </ul>
             </Card.Body>
+            <Card.Footer className="text-end">
+              <ButtonGroup>
+                <Button variant="primary">Add Goal</Button>
+                <Button variant="primary">Delete Goals</Button>
+              </ButtonGroup>
+            </Card.Footer>
           </Card>
         </Col>
         <Col sm={12} xl={5}>
           <Card style={{ height: "47vh" }}>
             <Card.Body className="py-2">
               <Card.Title>Recent Income</Card.Title>
-
               <Details incomes={incomes?.slice(0, 6)} />
             </Card.Body>
             <Card.Footer className="text-end">
@@ -167,7 +183,6 @@ export default function Dashboard() {
           <Card style={{ height: "47vh" }}>
             <Card.Body className="py-2">
               <Card.Title>Recent Expenses</Card.Title>
-
               <ExpenseDetails expenses={expenses} />
             </Card.Body>
             <Card.Footer className="text-end">
