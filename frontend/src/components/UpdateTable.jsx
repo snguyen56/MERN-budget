@@ -1,4 +1,5 @@
 import { useIncomeContext } from "../hooks/useIncomeContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,12 +7,13 @@ import Modal from "react-bootstrap/Modal";
 
 const { useState } = require("react");
 
-const UpdateIncomeForm = (props) => {
-  const { dispatch } = useIncomeContext();
+const UpdateTable = (props) => {
+  const { dispatch: dispatchIncome } = useIncomeContext();
+  const { dispatchExpense } = useExpenseContext();
 
-  const [title, setTitle] = useState(props.incomeData.title);
-  const [amount, setAmount] = useState(props.incomeData.amount);
-  const [category, setCategory] = useState(props.incomeData.category);
+  const [title, setTitle] = useState(props.data.title);
+  const [amount, setAmount] = useState(props.data.amount);
+  const [category, setCategory] = useState(props.data.category);
   const [error, setError] = useState(null);
 
   const [show, setShow] = useState(false);
@@ -22,17 +24,17 @@ const UpdateIncomeForm = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const income = { title, amount, category };
+    const data = { title, amount, category };
 
-    const response = await fetch("api/income/" + props.incomeData._id, {
+    const response = await fetch("api/" + props.type + "/" + props.data._id, {
       method: "PATCH",
-      body: JSON.stringify(income),
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    const response2 = await fetch("api/income/");
+    const response2 = await fetch("api/" + props.type + "/");
 
     const json = await response2.json();
 
@@ -41,9 +43,13 @@ const UpdateIncomeForm = (props) => {
       console.log(error);
     } else if (response.ok) {
       setError(null);
-      console.log("income updated:", json);
+      console.log("data updated:", json);
       setShow(false);
-      dispatch({ type: "SET_INCOME", payload: json });
+      if (props.type === "income") {
+        dispatchIncome({ type: "SET_INCOME", payload: json });
+      } else if (props.type === "expense") {
+        dispatchExpense({ type: "SET_EXPENSE", payload: json });
+      }
     }
   };
   return (
@@ -59,7 +65,7 @@ const UpdateIncomeForm = (props) => {
               <Form.Label>Title</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={props.incomeData.title}
+                placeholder={props.data.title}
                 onChange={(event) => setTitle(event.target.value)}
                 value={title}
               />
@@ -69,7 +75,7 @@ const UpdateIncomeForm = (props) => {
               <Form.Label>Amount</Form.Label>
               <Form.Control
                 type="number"
-                placeholder={props.incomeData.amount}
+                placeholder={props.data.amount}
                 onChange={(event) => setAmount(event.target.value)}
                 value={amount}
               />
@@ -84,7 +90,7 @@ const UpdateIncomeForm = (props) => {
               <Form.Label>Category</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={props.incomeData.category}
+                placeholder={props.data.category}
                 onChange={(event) => setCategory(event.target.value)}
                 value={category}
               />
@@ -109,4 +115,4 @@ const UpdateIncomeForm = (props) => {
   );
 };
 
-export default UpdateIncomeForm;
+export default UpdateTable;

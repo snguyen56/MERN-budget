@@ -1,4 +1,5 @@
 import { useExpenseContext } from "../hooks/useExpenseContext";
+import UpdateTable from "./UpdateTable";
 
 import Table from "react-bootstrap/Table";
 
@@ -36,7 +37,7 @@ export default function Details(props) {
                 <td>{expense.category}</td>
                 <td>{new Date(expense.date).toLocaleDateString()}</td>
                 <td className="ps-0">
-                  <i className="bi bi-pencil me-2"></i>
+                  <UpdateTable type="expense" data={expense} />
                   <i
                     className="bi bi-trash"
                     onClick={() => handleClick(expense._id)}
