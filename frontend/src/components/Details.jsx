@@ -19,7 +19,7 @@ export default function Details(props) {
   return (
     <>
       {props.incomes?.length > 0 ? (
-        <Table className="my-0" size="" hover borderless responsive>
+        <Table className="my-0" size="" hover responsive>
           <thead>
             <tr>
               <th>Title</th>
@@ -33,7 +33,7 @@ export default function Details(props) {
             {props.incomes.map((income) => (
               <tr key={income._id}>
                 <td>{income.title}</td>
-                <td>${income.amount}</td>
+                <td>${Intl.NumberFormat().format(income.amount)}</td>
                 <td>{income.category}</td>
                 <td>{new Date(income.date).toLocaleDateString()}</td>
                 <td className="ps-0">

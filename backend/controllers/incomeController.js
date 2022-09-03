@@ -18,6 +18,20 @@ const getIncomes = async (req, res) => {
   res.status(200).json(incomes);
 };
 
+const getIncomeSum = async (req, res) => {
+  const incomes = await Income.aggregate([
+    {
+      $group: {
+        _id: null, //change to user ID
+        total: {
+          $sum: "$amount",
+        },
+      },
+    },
+  ]);
+  res.status(200).json(incomes);
+};
+
 const createIncome = async (req, res) => {
   const { title, amount, category, date } = req.body;
 
@@ -64,4 +78,5 @@ module.exports = {
   createIncome,
   deleteIncome,
   updateIncome,
+  getIncomeSum,
 };

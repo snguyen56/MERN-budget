@@ -41,3 +41,13 @@
 i {
   cursor: pointer;
 }
+
+ul {
+  margin: 0;
+  list-style: none;
+  float: left;
+}
+
+input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+}
