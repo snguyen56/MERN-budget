@@ -1,4 +1,5 @@
 import { useIncomeContext } from "../hooks/useIncomeContext";
+import UpdateIncomeForm from "./UpdateIncomeForm";
 
 import Table from "react-bootstrap/Table";
 
@@ -36,7 +37,7 @@ export default function Details(props) {
                 <td>{income.category}</td>
                 <td>{new Date(income.date).toLocaleDateString()}</td>
                 <td className="ps-0">
-                  <i className="bi bi-pencil me-2"></i>
+                  <UpdateIncomeForm incomeData={income} />
                   <i
                     className="bi bi-trash"
                     onClick={() => handleClick(income._id)}
