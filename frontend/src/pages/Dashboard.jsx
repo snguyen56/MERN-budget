@@ -63,7 +63,7 @@ export default function Dashboard() {
           <Card style={{ height: "45vh" }}>
             <Card.Body>
               <Card.Title>This Month's Spending</Card.Title>
-              <div style={{ height: "40vh" }}>
+              <div style={{ height: "90%" }}>
                 <LineChart />
               </div>
             </Card.Body>
@@ -71,7 +71,7 @@ export default function Dashboard() {
         </Col>
         <Col className="d-lg-flex flex-lg-column justify-content-lg-between">
           <Row>
-            <Col sm={12} md={6} className="custom-class">
+            <Col sm={12} md={6}>
               <Card style={{ height: "21vh" }}>
                 <Card.Body>
                   <Card.Title>Total Income</Card.Title>
@@ -168,7 +168,7 @@ export default function Dashboard() {
           </Card>
         </Col>
         <Col sm={12} xl={5}>
-          <Card style={{ height: "47vh" }}>
+          <Card style={{ height: "100%" }}>
             <Card.Body className="py-2">
               <Card.Title>Recent Income</Card.Title>
               <Details incomes={incomes?.slice(0, 6)} />
