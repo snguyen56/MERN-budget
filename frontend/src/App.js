@@ -3,6 +3,9 @@ import "./custom.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
+import { Route, Routes } from "react-router-dom";
+import Expenses from "./pages/Expenses";
+import Income from "./pages/Income";
 
 function App() {
   return (
@@ -11,7 +14,11 @@ function App() {
         <Sidebar />
       </div>
       <div className="content">
-        <Dashboard />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/income" element={<Income />} />
+          <Route path="/expenses" element={<Expenses />} />
+        </Routes>
       </div>
     </div>
   );
