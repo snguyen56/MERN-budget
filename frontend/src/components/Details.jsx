@@ -4,7 +4,7 @@ import UpdateTable from "./UpdateTable";
 import Table from "react-bootstrap/Table";
 
 export default function Details(props) {
-  const { dispatch } = useIncomeContext();
+  const { dispatchIncome } = useIncomeContext();
 
   const handleClick = async (id) => {
     const response = await fetch("api/income/" + id, {
@@ -13,7 +13,7 @@ export default function Details(props) {
     const json = await response.json();
 
     if (response.ok) {
-      dispatch({ type: "DELETE_INCOME", payload: json });
+      dispatchIncome({ type: "DELETE_INCOME", payload: json });
     }
   };
   return (

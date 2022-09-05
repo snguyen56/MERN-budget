@@ -15,10 +15,12 @@ const expenseSchema = new Schema(
     category: {
       type: String,
       default: "Misc",
+      required: true,
     },
     date: {
       type: Date,
       default: Date.now,
+      required: true,
     },
   },
   { timestamps: true }

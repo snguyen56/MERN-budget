@@ -3,15 +3,17 @@ import { useIncomeContext } from "../hooks/useIncomeContext";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import InputGroup from "react-bootstrap/InputGroup";
 
 const { useState } = require("react");
 
 const IncomeForm = () => {
-  const { dispatch } = useIncomeContext();
+  const { dispatchIncome } = useIncomeContext();
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Misc");
+  const [date, setDate] = useState("");
   const [error, setError] = useState(null);
 
   const [show, setShow] = useState(false);
@@ -40,10 +42,11 @@ const IncomeForm = () => {
       setTitle("");
       setAmount("");
       setCategory("Misc");
+      setDate("");
       setError(null);
       console.log("new income added:", json);
       setShow(false);
-      dispatch({ type: "CREATE_INCOME", payload: json });
+      dispatchIncome({ type: "CREATE_INCOME", payload: json });
     }
   };
   return (
@@ -54,7 +57,7 @@ const IncomeForm = () => {
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleSubmit}>
           <Modal.Header>
-            <Modal.Title>Add Income</Modal.Title>
+            <Modal.Title className="mx-auto">Add Income</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group className="mb-3" controlId="formTitle">
@@ -69,17 +72,40 @@ const IncomeForm = () => {
 
             <Form.Group className="mb-3" controlId="formAmount">
               <Form.Label>Amount</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="$ Amount"
-                onChange={(event) => setAmount(event.target.value)}
-                value={amount}
-              />
+              <InputGroup>
+                <InputGroup.Text>$</InputGroup.Text>
+                <Form.Control
+                  type="number"
+                  onChange={(event) => setAmount(event.target.value)}
+                  value={amount}
+                />
+              </InputGroup>
               {error && (
                 <Form.Text className="text-danger" variant="primary">
                   {error}
                 </Form.Text>
               )}
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Category</Form.Label>
+              <Form.Select
+                defaultValue="Misc"
+                onChange={(event) => setCategory(event.target.value)}
+              >
+                <option value="Paycheck">Paycheck</option>
+                <option value="Bonus">Bonus</option>
+                <option value="Gift">Gift</option>
+                <option value="Misc">Misc</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formDate">
+              <Form.Label>Date</Form.Label>
+              <Form.Control
+                type="date"
+                placeholder="Enter Date"
+                onChange={(event) => setDate(event.target.value)}
+                value={date}
+              />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
