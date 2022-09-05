@@ -19,7 +19,7 @@ import AddForm from "../components/AddForm";
 import ExpenseDetails from "../components/ExpenseDetails";
 
 export default function Dashboard() {
-  const { incomes, dispatch: dispatchIncome } = useIncomeContext();
+  const { incomes, dispatchIncome } = useIncomeContext();
   const { expenses, dispatchExpense } = useExpenseContext();
 
   useEffect(() => {

@@ -36,10 +36,10 @@ const getExpenseSum = async (req, res) => {
 };
 
 const createExpense = async (req, res) => {
-  const { title, amount } = req.body;
+  const { title, amount, category, date } = req.body;
 
   try {
-    const expense = await Expense.create({ title, amount });
+    const expense = await Expense.create({ title, amount, category, date });
     res.status(200).json(expense);
   } catch (error) {
     res.status(400).json({ error: error.message });
