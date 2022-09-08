@@ -8,9 +8,13 @@ const {
   createIncome,
   deleteIncome,
   updateIncome,
+  getIncomeSum,
+  dummyIncome,
 } = require("../controllers/incomeController");
 
 router.get("/", getIncomes);
+
+router.get("/sum", getIncomeSum);
 
 router.get("/:id", getIncome);
 
@@ -19,5 +23,7 @@ router.post("/", createIncome);
 router.delete("/:id", deleteIncome);
 
 router.patch("/:id", updateIncome);
+
+router.post("/test", dummyIncome);
 
 module.exports = router;

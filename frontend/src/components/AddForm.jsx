@@ -1,4 +1,4 @@
-import { useIncomeContext } from "../hooks/useIncomeContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -7,8 +7,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 
 const { useState } = require("react");
 
-const IncomeForm = () => {
-  const { dispatchIncome } = useIncomeContext();
+export default function AddForm(props) {
+  const { dispatchExpense } = useExpenseContext();
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -24,11 +24,15 @@ const IncomeForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const income = { title, amount, category };
+    console.log("category is: ", category);
 
-    const response = await fetch("/api/income", {
+    const data = { title, amount, category };
+
+    const mode = props.type;
+
+    const response = await fetch("/api/" + mode, {
       method: "POST",
-      body: JSON.stringify(income),
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
@@ -44,20 +48,20 @@ const IncomeForm = () => {
       setCategory("Misc");
       setDate("");
       setError(null);
-      console.log("new income added:", json);
+      console.log("new " + mode + " added:", json);
       setShow(false);
-      dispatchIncome({ type: "CREATE_INCOME", payload: json });
+      dispatchExpense({ type: "CREATE_EXPENSE", payload: json });
     }
   };
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        Add Income
+        Add {props.type}
       </Button>
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleSubmit}>
           <Modal.Header>
-            <Modal.Title className="mx-auto">Add Income</Modal.Title>
+            <Modal.Title className="mx-auto">Add Expense</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group className="mb-3" controlId="formTitle">
@@ -92,9 +96,12 @@ const IncomeForm = () => {
                 defaultValue="Misc"
                 onChange={(event) => setCategory(event.target.value)}
               >
-                <option value="Paycheck">Paycheck</option>
-                <option value="Bonus">Bonus</option>
-                <option value="Gift">Gift</option>
+                <option value="Utility">Utility</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Insurance">Insurance</option>
+                <option value="Rent/Mortgage">Rent/Mortgage</option>
+                <option value="Food/Restaurant">Food/Restaurant</option>
                 <option value="Misc">Misc</option>
               </Form.Select>
             </Form.Group>
@@ -120,6 +127,4 @@ const IncomeForm = () => {
       </Modal>
     </>
   );
-};
-
-export default IncomeForm;
+}
