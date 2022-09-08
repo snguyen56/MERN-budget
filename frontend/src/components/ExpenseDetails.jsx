@@ -1,25 +1,25 @@
-import { useIncomeContext } from "../hooks/useIncomeContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
 import UpdateTable from "./UpdateTable";
 
 import Table from "react-bootstrap/Table";
 
 export default function Details(props) {
-  const { dispatchIncome } = useIncomeContext();
+  const { dispatchExpense } = useExpenseContext();
 
   const handleClick = async (id) => {
-    const response = await fetch("api/income/" + id, {
+    const response = await fetch("api/expense/" + id, {
       method: "DELETE",
     });
     const json = await response.json();
 
     if (response.ok) {
-      dispatchIncome({ type: "DELETE_INCOME", payload: json });
+      dispatchExpense({ type: "DELETE_EXPENSE", payload: json });
     }
   };
   return (
     <>
-      {props.incomes?.length > 0 ? (
-        <Table className="my-0" size="" hover responsive>
+      {props.expenses?.length > 0 ? (
+        <Table className="my-0" size="" hover borderless responsive>
           <thead>
             <tr>
               <th>Title</th>
@@ -30,17 +30,17 @@ export default function Details(props) {
             </tr>
           </thead>
           <tbody>
-            {props.incomes.map((income) => (
-              <tr key={income._id}>
-                <td>{income.title}</td>
-                <td>${Intl.NumberFormat().format(income.amount)}</td>
-                <td>{income.category}</td>
-                <td>{new Date(income.date).toLocaleDateString()}</td>
+            {props.expenses.map((expense) => (
+              <tr key={expense._id}>
+                <td>{expense.title}</td>
+                <td>${Intl.NumberFormat().format(expense.amount)}</td>
+                <td>{expense.category}</td>
+                <td>{new Date(expense.date).toLocaleDateString()}</td>
                 <td className="ps-0">
-                  <UpdateTable type="income" data={income} />
+                  <UpdateTable type="expense" data={expense} />
                   <i
                     className="bi bi-trash"
-                    onClick={() => handleClick(income._id)}
+                    onClick={() => handleClick(expense._id)}
                   ></i>
                 </td>
               </tr>

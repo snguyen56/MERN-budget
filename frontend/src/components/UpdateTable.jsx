@@ -1,19 +1,19 @@
 import { useIncomeContext } from "../hooks/useIncomeContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import InputGroup from "react-bootstrap/InputGroup";
 
 const { useState } = require("react");
 
-const IncomeForm = () => {
-  const { dispatchIncome } = useIncomeContext();
+const UpdateTable = (props) => {
+  const { dispatch: dispatchIncome } = useIncomeContext();
+  const { dispatchExpense } = useExpenseContext();
 
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("Misc");
-  const [date, setDate] = useState("");
+  const [title, setTitle] = useState(props.data.title);
+  const [amount, setAmount] = useState(props.data.amount);
+  const [category, setCategory] = useState(props.data.category);
   const [error, setError] = useState(null);
 
   const [show, setShow] = useState(false);
@@ -24,47 +24,48 @@ const IncomeForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const income = { title, amount, category };
+    const data = { title, amount, category };
 
-    const response = await fetch("/api/income", {
-      method: "POST",
-      body: JSON.stringify(income),
+    const response = await fetch("api/" + props.type + "/" + props.data._id, {
+      method: "PATCH",
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    const json = await response.json();
+
+    const response2 = await fetch("api/" + props.type + "/");
+
+    const json = await response2.json();
 
     if (!response.ok) {
       setError(json.error);
       console.log(error);
     } else if (response.ok) {
-      setTitle("");
-      setAmount("");
-      setCategory("Misc");
-      setDate("");
       setError(null);
-      console.log("new income added:", json);
+      console.log("data updated:", json);
       setShow(false);
-      dispatchIncome({ type: "CREATE_INCOME", payload: json });
+      if (props.type === "income") {
+        dispatchIncome({ type: "SET_INCOME", payload: json });
+      } else if (props.type === "expense") {
+        dispatchExpense({ type: "SET_EXPENSE", payload: json });
+      }
     }
   };
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add Income
-      </Button>
+      <i className="bi bi-pencil me-2" onClick={handleShow}></i>
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleSubmit}>
           <Modal.Header>
-            <Modal.Title className="mx-auto">Add Income</Modal.Title>
+            <Modal.Title>Add Income</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group className="mb-3" controlId="formTitle">
               <Form.Label>Title</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Title"
+                placeholder={props.data.title}
                 onChange={(event) => setTitle(event.target.value)}
                 value={title}
               />
@@ -72,40 +73,32 @@ const IncomeForm = () => {
 
             <Form.Group className="mb-3" controlId="formAmount">
               <Form.Label>Amount</Form.Label>
-              <InputGroup>
-                <InputGroup.Text>$</InputGroup.Text>
-                <Form.Control
-                  type="number"
-                  onChange={(event) => setAmount(event.target.value)}
-                  value={amount}
-                />
-              </InputGroup>
+              <Form.Control
+                type="number"
+                placeholder={props.data.amount}
+                onChange={(event) => setAmount(event.target.value)}
+                value={amount}
+              />
               {error && (
                 <Form.Text className="text-danger" variant="primary">
                   {error}
                 </Form.Text>
               )}
             </Form.Group>
-            <Form.Group className="mb-3">
+
+            <Form.Group className="mb-3" controlId="formCategory">
               <Form.Label>Category</Form.Label>
-              <Form.Select
-                defaultValue="Misc"
-                onChange={(event) => setCategory(event.target.value)}
-              >
-                <option value="Paycheck">Paycheck</option>
-                <option value="Bonus">Bonus</option>
-                <option value="Gift">Gift</option>
-                <option value="Misc">Misc</option>
-              </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formDate">
-              <Form.Label>Date</Form.Label>
               <Form.Control
-                type="date"
-                placeholder="Enter Date"
-                onChange={(event) => setDate(event.target.value)}
-                value={date}
+                type="text"
+                placeholder={props.data.category}
+                onChange={(event) => setCategory(event.target.value)}
+                value={category}
               />
+              {error && (
+                <Form.Text className="text-danger" variant="primary">
+                  {error}
+                </Form.Text>
+              )}
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
@@ -122,4 +115,4 @@ const IncomeForm = () => {
   );
 };
 
-export default IncomeForm;
+export default UpdateTable;
