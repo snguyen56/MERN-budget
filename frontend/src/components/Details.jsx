@@ -1,10 +1,12 @@
 import { useIncomeContext } from "../hooks/useIncomeContext";
-import UpdateTable from "./UpdateTable";
 
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 
 export default function Details(props) {
-  const { dispatchIncome } = useIncomeContext();
+  const { dispatch } = useIncomeContext();
+
+  const incomes = props.incomes;
 
   const handleClick = async (id) => {
     const response = await fetch("api/income/" + id, {
@@ -13,19 +15,18 @@ export default function Details(props) {
     const json = await response.json();
 
     if (response.ok) {
-      dispatchIncome({ type: "DELETE_INCOME", payload: json });
+      dispatch({ type: "DELETE_INCOME", payload: json });
     }
   };
   return (
     <>
-      {props.incomes?.length > 0 ? (
-        <Table className="my-0" size="" hover responsive>
+      {incomes && incomes.length > 0 ? (
+        <Table variant="dark" size="" hover responsive>
           <thead>
             <tr>
               <th>Title</th>
               <th>Amount</th>
               <th>Category</th>
-              <th>Date</th>
               <th></th>
             </tr>
           </thead>
@@ -33,15 +34,12 @@ export default function Details(props) {
             {props.incomes.map((income) => (
               <tr key={income._id}>
                 <td>{income.title}</td>
-                <td>${Intl.NumberFormat().format(income.amount)}</td>
+                <td>${income.amount}</td>
                 <td>{income.category}</td>
-                <td>{new Date(income.date).toLocaleDateString()}</td>
-                <td className="ps-0">
-                  <UpdateTable type="income" data={income} />
-                  <i
-                    className="bi bi-trash"
-                    onClick={() => handleClick(income._id)}
-                  ></i>
+                <td>
+                  <Button onClick={() => handleClick(income._id)}>
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}

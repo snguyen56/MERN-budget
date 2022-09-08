@@ -18,28 +18,11 @@ const getExpenses = async (req, res) => {
   res.status(200).json(expenses);
 };
 
-const getExpenseSum = async (req, res) => {
-  const expense = await Expense.aggregate([
-    {
-      $group: {
-        _id: null, //change to user ID
-        total: {
-          $sum: "$amount",
-        },
-      },
-    },
-  ]);
-  if (expense.length == 0) {
-    return res.status(404).json({ error: "No expense data available" });
-  }
-  res.status(200).json(expense);
-};
-
 const createExpense = async (req, res) => {
-  const { title, amount, category, date } = req.body;
+  const { title, amount } = req.body;
 
   try {
-    const expense = await Expense.create({ title, amount, category, date });
+    const expense = await Expense.create({ title, amount });
     res.status(200).json(expense);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -81,5 +64,4 @@ module.exports = {
   createExpense,
   deleteExpense,
   updateExpense,
-  getExpenseSum,
 };

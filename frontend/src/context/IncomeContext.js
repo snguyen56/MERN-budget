@@ -4,7 +4,7 @@ export const IncomeContext = createContext();
 
 export const incomeReducer = (state, action) => {
   switch (action.type) {
-    case "SET_INCOME":
+    case "SET_INCOMES":
       return {
         incomes: action.payload,
       };
@@ -24,12 +24,12 @@ export const incomeReducer = (state, action) => {
 };
 
 export const IncomeContextProvider = ({ children }) => {
-  const [state, dispatchIncome] = useReducer(incomeReducer, {
+  const [state, dispatch] = useReducer(incomeReducer, {
     incomes: null,
   });
 
   return (
-    <IncomeContext.Provider value={{ ...state, dispatchIncome }}>
+    <IncomeContext.Provider value={{ ...state, dispatch }}>
       {children}
     </IncomeContext.Provider>
   );
