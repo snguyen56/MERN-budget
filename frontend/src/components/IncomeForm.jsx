@@ -24,7 +24,7 @@ const IncomeForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const income = { title, amount, category };
+    const income = { title, amount, category, date };
 
     const response = await fetch("/api/income", {
       method: "POST",
