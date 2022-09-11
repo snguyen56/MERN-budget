@@ -35,6 +35,19 @@ const getExpenseSum = async (req, res) => {
   res.status(200).json(expense);
 };
 
+const getMonthlyExpenses = async (req, res) => {
+  var date = new Date();
+  var start = new Date(date.getFullYear(), date.getMonth(), 1);
+  var end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  const expenses = await Expense.find({
+    date: {
+      $gte: start,
+      $lt: end,
+    },
+  }).sort({ date: -1 });
+  res.status(200).json(expenses);
+};
+
 const createExpense = async (req, res) => {
   const { title, amount, category, date } = req.body;
 
@@ -82,4 +95,5 @@ module.exports = {
   deleteExpense,
   updateExpense,
   getExpenseSum,
+  getMonthlyExpenses,
 };

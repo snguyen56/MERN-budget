@@ -9,11 +9,14 @@ const {
   deleteExpense,
   updateExpense,
   getExpenseSum,
+  getMonthlyExpenses,
 } = require("../controllers/expenseController");
 
 router.get("/", getExpenses);
 
 router.get("/sum", getExpenseSum);
+
+router.get("/month", getMonthlyExpenses);
 
 router.get("/:id", getExpense);
 

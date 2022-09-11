@@ -9,11 +9,14 @@ const {
   deleteIncome,
   updateIncome,
   getIncomeSum,
+  getMonthlyIncomes,
 } = require("../controllers/incomeController");
 
 router.get("/", getIncomes);
 
 router.get("/sum", getIncomeSum);
+
+router.get("/month", getMonthlyIncomes);
 
 router.get("/:id", getIncome);
 

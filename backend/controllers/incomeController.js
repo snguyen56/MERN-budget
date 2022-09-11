@@ -29,6 +29,22 @@ const getIncomeSum = async (req, res) => {
       },
     },
   ]);
+  if (incomes.length == 0) {
+    return res.status(404).json({ error: "No income data available" });
+  }
+  res.status(200).json(incomes);
+};
+
+const getMonthlyIncomes = async (req, res) => {
+  var date = new Date();
+  var start = new Date(date.getFullYear(), date.getMonth(), 1);
+  var end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  const incomes = await Income.find({
+    date: {
+      $gte: start,
+      $lt: end,
+    },
+  }).sort({ date: -1 });
   res.status(200).json(incomes);
 };
 
@@ -79,4 +95,5 @@ module.exports = {
   deleteIncome,
   updateIncome,
   getIncomeSum,
+  getMonthlyIncomes,
 };

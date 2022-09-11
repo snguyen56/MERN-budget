@@ -24,15 +24,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
+      //Grab income data
       const incomesResponse = await fetch("/api/income");
-      const expensesResponse = await fetch("/api/expense");
-
       const incomeData = await incomesResponse.json();
-      const expenseData = await expensesResponse.json();
-
       if (incomesResponse.ok) {
         dispatchIncome({ type: "SET_INCOME", payload: incomeData });
       }
+
+      //Grab expense data
+      const expensesResponse = await fetch("/api/expense");
+      const expenseData = await expensesResponse.json();
       if (expensesResponse.ok) {
         dispatchExpense({ type: "SET_EXPENSE", payload: expenseData });
       }
