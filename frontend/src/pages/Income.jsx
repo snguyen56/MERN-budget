@@ -1,4 +1,6 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { useProfitContext } from "../hooks/useProfitContext";
+
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
@@ -7,6 +9,22 @@ import LineChart from "../components/LineChart";
 import Details from "../components/Details";
 
 export default function Income() {
+  const { state } = useProfitContext();
+  const [lastMonth, setLastMonth] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const monthResponse = await fetch("/api/month");
+      const monthData = await monthResponse.json();
+      if (monthResponse.ok) {
+        setLastMonth(monthData[0].total_income);
+        console.log(monthData);
+      }
+      console.log(state);
+    };
+    fetchData();
+  }, []);
+
   return (
     <Container fluid>
       <Row className="my-4">
@@ -32,7 +50,12 @@ export default function Income() {
         <Col className="d-lg-flex flex-lg-column justify-content-lg-between">
           <Card style={{ height: "20%" }}>
             <Card.Body>
-              <Card.Title>Placeholder</Card.Title>
+              <Card.Title>Last Month's Income</Card.Title>
+
+              {Intl.NumberFormat("en-US", {
+                style: "percent",
+                minimumFractionDigits: 2,
+              }).format(lastMonth / state.income)}
             </Card.Body>
           </Card>
           <Card style={{ height: "20%" }}>
