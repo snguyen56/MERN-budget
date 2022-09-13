@@ -55,7 +55,7 @@ export default function Income() {
               {Intl.NumberFormat("en-US", {
                 style: "percent",
                 minimumFractionDigits: 2,
-              }).format(lastMonth / state.income)}
+              }).format(lastMonth / state.income - 1)}
             </Card.Body>
           </Card>
           <Card style={{ height: "20%" }}>
