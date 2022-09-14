@@ -14,6 +14,12 @@ export default function Sidebar() {
       <Nav.Link as={Link} to="/expenses" eventKey="link-2">
         Expenses
       </Nav.Link>
+      <Nav.Link as={Link} to="/login" eventKey="link-1">
+        login
+      </Nav.Link>
+      <Nav.Link as={Link} to="/signup" eventKey="link-2">
+        signup
+      </Nav.Link>
     </Nav>
   );
 }

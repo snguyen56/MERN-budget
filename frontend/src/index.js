@@ -6,18 +6,21 @@ import { BrowserRouter } from "react-router-dom";
 import { IncomeContextProvider } from "./context/IncomeContext";
 import { ExpenseContextProvider } from "./context/ExpenseContext";
 import { ProfitContextProvider } from "./context/ProfitContext";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   //<React.StrictMode>
   <BrowserRouter>
-    <ExpenseContextProvider>
-      <IncomeContextProvider>
-        <ProfitContextProvider>
-          <App />
-        </ProfitContextProvider>
-      </IncomeContextProvider>
-    </ExpenseContextProvider>
+    <AuthContextProvider>
+      <ExpenseContextProvider>
+        <IncomeContextProvider>
+          <ProfitContextProvider>
+            <App />
+          </ProfitContextProvider>
+        </IncomeContextProvider>
+      </ExpenseContextProvider>
+    </AuthContextProvider>
   </BrowserRouter>
   //</React.StrictMode>
 );
