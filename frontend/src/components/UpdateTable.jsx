@@ -15,7 +15,7 @@ const UpdateTable = (props) => {
   const [amount, setAmount] = useState(props.data.amount);
   const [category, setCategory] = useState(props.data.category);
   const [date, setDate] = useState(
-    new Date(props.data.date).toISOString().split("T")[0]
+    new Date(props.data.date).toLocaleDateString("en-CA")
   );
 
   const [error, setError] = useState(null);
