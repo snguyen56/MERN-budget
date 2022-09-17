@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLogin } from "../hooks/useLogin";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,11 +7,12 @@ import Form from "react-bootstrap/Form";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, error, isLoading } = useLogin();
 
   const handleSubmit = async (event) => {
-    email.preventDefault();
+    event.preventDefault();
 
-    console.log(email, password);
+    await login(email, password);
   };
 
   return (
@@ -34,9 +36,10 @@ export default function Login() {
           value={password}
         />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Button variant="primary" type="submit" disabled={isLoading}>
         Submit
       </Button>
+      {error && <div>{error}</div>}
     </Form>
   );
 }

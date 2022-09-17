@@ -1,8 +1,14 @@
 import Nav from "react-bootstrap/Nav";
+import Button from "react-bootstrap/Button";
+import useLogout from "../hooks/useLogout";
 
 import { Link } from "react-router-dom";
 
 export default function Sidebar() {
+  const logout = useLogout();
+  const handClick = () => {
+    logout();
+  };
   return (
     <Nav defaultActiveKey="/" className="flex-column text-center">
       <Nav.Link as={Link} to="/">
@@ -20,6 +26,7 @@ export default function Sidebar() {
       <Nav.Link as={Link} to="/signup" eventKey="link-2">
         signup
       </Nav.Link>
+      <Button onClick={handClick}>Logout</Button>
     </Nav>
   );
 }
