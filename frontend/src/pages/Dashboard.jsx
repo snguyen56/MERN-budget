@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useIncomeContext } from "../hooks/useIncomeContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
+import { useProfitContext } from "../hooks/useProfitContext";
 import LineChart from "../components/LineChart";
 
 //bootstrap components
@@ -21,40 +22,43 @@ import ExpenseDetails from "../components/ExpenseDetails";
 export default function Dashboard() {
   const { incomes, dispatchIncome } = useIncomeContext();
   const { expenses, dispatchExpense } = useExpenseContext();
+  const { state, setIncome, setExpense } = useProfitContext();
 
   useEffect(() => {
     const fetchData = async () => {
+      //Grab income data
       const incomesResponse = await fetch("/api/income");
-      const expensesResponse = await fetch("/api/expense");
-
       const incomeData = await incomesResponse.json();
-      const expenseData = await expensesResponse.json();
-
       if (incomesResponse.ok) {
         dispatchIncome({ type: "SET_INCOME", payload: incomeData });
       }
+
+      //Grab expense data
+      const expensesResponse = await fetch("/api/expense");
+      const expenseData = await expensesResponse.json();
       if (expensesResponse.ok) {
         dispatchExpense({ type: "SET_EXPENSE", payload: expenseData });
       }
+
+      //Grab total income
+      const incomeSumResponse = await fetch("/api/income/sum");
+      const incomeSumData = await incomeSumResponse.json();
+      console.log("total income: ", incomeSumData[0].total);
+      if (incomeSumResponse.ok) {
+        setIncome(incomeSumData[0].total);
+      }
+
+      //Grab total expenses
+      const expenseSumResponse = await fetch("/api/expense/sum");
+      const expenseSumData = await expenseSumResponse.json();
+      console.log("total expenses: ", expenseSumData[0].total);
+      if (expenseSumResponse.ok) {
+        setExpense(expenseSumData[0].total);
+      }
+      console.log("gross profit: ", state.profit);
     };
     fetchData();
   }, [dispatchIncome, dispatchExpense]);
-
-  let incomeSum = 0;
-  if (incomes) {
-    for (let x of incomes) {
-      incomeSum += parseFloat(x.amount);
-    }
-  }
-
-  let expenseSum = 0;
-  if (expenses) {
-    for (let x of expenses) {
-      expenseSum += parseFloat(x.amount);
-    }
-  }
-
-  const profit = incomeSum - expenseSum;
 
   return (
     <Container fluid>
@@ -79,7 +83,7 @@ export default function Dashboard() {
                     {Intl.NumberFormat("en-US", {
                       style: "currency",
                       currency: "USD",
-                    }).format(incomeSum)}
+                    }).format(state.income)}
                   </div>
                 </Card.Body>
               </Card>
@@ -92,7 +96,7 @@ export default function Dashboard() {
                     {Intl.NumberFormat("en-US", {
                       style: "currency",
                       currency: "USD",
-                    }).format(expenseSum)}
+                    }).format(state.expense)}
                   </div>
                 </Card.Body>
               </Card>
@@ -107,7 +111,7 @@ export default function Dashboard() {
                     {Intl.NumberFormat("en-US", {
                       style: "currency",
                       currency: "USD",
-                    }).format(profit)}
+                    }).format(state.profit)}
                   </div>
                 </Card.Body>
               </Card>

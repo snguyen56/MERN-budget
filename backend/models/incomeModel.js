@@ -6,11 +6,11 @@ const incomeSchema = new Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, "title is required"],
     },
     amount: {
       type: Number,
-      required: true,
+      required: [true, "amount is required"],
     },
     category: {
       type: String,

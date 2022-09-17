@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import { Route, Routes } from "react-router-dom";
 import Expenses from "./pages/Expenses";
 import Income from "./pages/Income";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <div className="content">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/income" element={<Income />} />
           <Route path="/expenses" element={<Expenses />} />
         </Routes>

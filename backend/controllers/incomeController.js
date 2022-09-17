@@ -29,6 +29,22 @@ const getIncomeSum = async (req, res) => {
       },
     },
   ]);
+  if (incomes.length == 0) {
+    return res.status(404).json({ error: "No income data available" });
+  }
+  res.status(200).json(incomes);
+};
+
+const getMonthlyIncomes = async (req, res) => {
+  var date = new Date();
+  var start = new Date(date.getFullYear(), date.getMonth(), 1);
+  var end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  const incomes = await Income.find({
+    date: {
+      $gte: start,
+      $lt: end,
+    },
+  }).sort({ date: -1 });
   res.status(200).json(incomes);
 };
 
@@ -72,72 +88,6 @@ const updateIncome = async (req, res) => {
   res.status(200).json(income);
 };
 
-const dummyIncome = async (req, res) => {
-  console.log("ENTER DUMMY INCOME");
-  const currentMonth = Date.now();
-  const prevMonth = new Date();
-  prevMonth.setMonth(prevMonth.getMonth() - 1);
-  const twoMonthsBack = new Date();
-  twoMonthsBack.setMonth(twoMonthsBack.getMonth() - 2);
-  const threeMonthsBack = new Date();
-  threeMonthsBack.setMonth(threeMonthsBack.getMonth() - 3);
-  try {
-    const income = await Income.insertMany([
-      {
-        title: "rent",
-        amount: "500",
-        category: "Misc",
-        date: currentMonth,
-      },
-      {
-        title: "gas",
-        amount: "50",
-        category: "Misc",
-        date: currentMonth,
-      },
-      {
-        title: "rent",
-        amount: "500",
-        category: "Misc",
-        date: prevMonth,
-      },
-      {
-        title: "student loans",
-        amount: "10000",
-        category: "Misc",
-        date: prevMonth,
-      },
-      {
-        title: "rent",
-        amount: "500",
-        category: "Misc",
-        date: twoMonthsBack,
-      },
-      {
-        title: "groceries",
-        amount: "350",
-        category: "Misc",
-        date: twoMonthsBack,
-      },
-      {
-        title: "rent",
-        amount: "500",
-        category: "Misc",
-        date: threeMonthsBack,
-      },
-      {
-        title: "water bill",
-        amount: "200",
-        category: "Misc",
-        date: threeMonthsBack,
-      },
-    ]);
-    res.status(200).json(income);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
 module.exports = {
   getIncome,
   getIncomes,
@@ -145,5 +95,5 @@ module.exports = {
   deleteIncome,
   updateIncome,
   getIncomeSum,
-  dummyIncome,
+  getMonthlyIncomes,
 };

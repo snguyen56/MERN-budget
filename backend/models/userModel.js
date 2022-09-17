@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const bcryt = require("bcrypt");
 const validator = require("validator");
 
 const Schema = mongoose.Schema;
@@ -16,52 +16,45 @@ const userSchema = new Schema({
   },
 });
 
-// static signup method
+//signup method
 userSchema.statics.signup = async function (email, password) {
-  // validation
+  //validation
   if (!email || !password) {
     throw Error("All fields must be filled");
   }
   if (!validator.isEmail(email)) {
+    throw Error("Email is not valid");
+  }
+  if (!validator.isStrongPassword(password)) {
+    throw Error("Password not strong enough");
   }
 
   const exists = await this.findOne({ email });
-
-  // Checks if the email is in use
   if (exists) {
     throw Error("Email already in use");
   }
-
-  // Generating the salt
-  const salt = await bcrypt.genSalt(10);
-  // Hashing the password
-  const hash = await bcrypt.hash(password, salt);
+  const salt = await bcryt.genSalt();
+  const hash = await bcryt.hash(password, salt);
 
   const user = await this.create({ email, password: hash });
-
   return user;
 };
 
-// static login method
+//login method
 userSchema.statics.login = async function (email, password) {
-  // validation
   if (!email || !password) {
     throw Error("All fields must be filled");
   }
-
   const user = await this.findOne({ email });
-
-  // Checks if the email is in use
   if (!user) {
-    throw Error("Incorrect Email");
+    throw Error("Incorrect email");
   }
 
-  const match = await bcrypt.compare(password, user.password);
-
+  //compare password with hased password
+  const match = await bcryt.compare(password, user.password);
   if (!match) {
-    throw Error("Incorrect Password");
+    throw Error("Incorrect password");
   }
-
   return user;
 };
 
