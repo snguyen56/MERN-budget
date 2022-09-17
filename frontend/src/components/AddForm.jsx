@@ -26,8 +26,8 @@ export default function AddForm(props) {
 
     console.log("category is: ", category);
 
-    const data = { title, amount, category };
-
+    const data = { title, amount, category, date };
+    data.date = data.date.replace(/-/g, "/");
     const mode = props.type;
 
     const response = await fetch("/api/" + mode, {
@@ -110,7 +110,9 @@ export default function AddForm(props) {
               <Form.Control
                 type="date"
                 placeholder="Enter Date"
-                onChange={(event) => setDate(event.target.value)}
+                onChange={(event) => {
+                  setDate(event.target.value);
+                }}
                 value={date}
               />
             </Form.Group>

@@ -8,12 +8,16 @@ import Modal from "react-bootstrap/Modal";
 const { useState } = require("react");
 
 const UpdateTable = (props) => {
-  const { dispatch: dispatchIncome } = useIncomeContext();
+  const { dispatchIncome } = useIncomeContext();
   const { dispatchExpense } = useExpenseContext();
 
   const [title, setTitle] = useState(props.data.title);
   const [amount, setAmount] = useState(props.data.amount);
   const [category, setCategory] = useState(props.data.category);
+  const [date, setDate] = useState(
+    new Date(props.data.date).toISOString().split("T")[0]
+  );
+
   const [error, setError] = useState(null);
 
   const [show, setShow] = useState(false);
@@ -24,8 +28,8 @@ const UpdateTable = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = { title, amount, category };
-
+    const data = { title, amount, category, date };
+    data.date = data.date.replace(/-/g, "/");
     const response = await fetch("api/" + props.type + "/" + props.data._id, {
       method: "PATCH",
       body: JSON.stringify(data),
@@ -93,6 +97,20 @@ const UpdateTable = (props) => {
                 placeholder={props.data.category}
                 onChange={(event) => setCategory(event.target.value)}
                 value={category}
+              />
+              {error && (
+                <Form.Text className="text-danger" variant="primary">
+                  {error}
+                </Form.Text>
+              )}
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formDate">
+              <Form.Label>Date</Form.Label>
+              <Form.Control
+                type="date"
+                placeholder={props.data.date}
+                onChange={(event) => setDate(event.target.value)}
+                value={date}
               />
               {error && (
                 <Form.Text className="text-danger" variant="primary">

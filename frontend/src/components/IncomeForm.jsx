@@ -25,7 +25,7 @@ const IncomeForm = () => {
     event.preventDefault();
 
     const income = { title, amount, category, date };
-
+    income.date = income.date.replace(/-/g, "/");
     const response = await fetch("/api/income", {
       method: "POST",
       body: JSON.stringify(income),
