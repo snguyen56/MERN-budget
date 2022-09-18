@@ -4,6 +4,20 @@ const validator = require("validator");
 
 const Schema = mongoose.Schema;
 
+const budgetSchema = new Schema({
+  name: { type: String },
+  budget: { type: Number },
+});
+
+const monthSchema = new Schema({
+  date: { type: Date, default: Date.now },
+  totalIncome: { type: Number, default: 0, required: true },
+  totalExpenses: { type: Number, default: 0, required: true },
+  grossProfit: { type: Number, default: 0, required: true },
+});
+
+const taskSchema = new Schema({ name: { type: String } });
+
 const userSchema = new Schema({
   email: {
     type: String,
@@ -14,6 +28,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  budgets: [budgetSchema],
+  currentMonth: monthSchema,
+  tasks: [taskSchema],
 });
 
 //signup method
