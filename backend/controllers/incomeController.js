@@ -15,7 +15,7 @@ const getIncome = async (req, res) => {
 
 const getIncomes = async (req, res) => {
   const user_id = req.user._id;
-  const incomes = await Income.find({ user_id }).sort({ createdAt: -1 });
+  const incomes = await Income.find({ user_id }).sort({ date: -1 });
   res.status(200).json(incomes);
 };
 
@@ -23,8 +23,42 @@ const getIncomeSum = async (req, res) => {
   const user_id = req.user._id;
   const incomes = await Income.aggregate([
     {
-      "$match": {
+      $match: {
         user_id: user_id.toString(),
+      },
+    },
+    {
+      $group: {
+        _id: null, //change to user ID
+        total: {
+          $sum: "$amount",
+        },
+      },
+    },
+  ]);
+  if (incomes.length == 0) {
+    return res.status(404).json({ error: "No income data available" });
+  }
+  res.status(200).json(incomes);
+};
+
+const getMonthlyIncomeSum = async (req, res) => {
+  const user_id = req.user._id;
+  var date = new Date();
+  var start = new Date(date.getFullYear(), date.getMonth(), 1);
+  var end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  const incomes = await Income.aggregate([
+    {
+      $match: {
+        user_id: user_id.toString(),
+      },
+    },
+    {
+      $match: {
+        date: {
+          $gte: start,
+          $lt: end,
+        },
       },
     },
     {
@@ -114,4 +148,5 @@ module.exports = {
   updateIncome,
   getIncomeSum,
   getMonthlyIncomes,
+  getMonthlyIncomeSum,
 };

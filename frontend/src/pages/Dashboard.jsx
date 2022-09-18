@@ -32,7 +32,7 @@ export default function Dashboard() {
       //Grab income data
       const incomesResponse = await fetch("/api/income", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const incomeData = await incomesResponse.json();
@@ -43,7 +43,7 @@ export default function Dashboard() {
       //Grab expense data
       const expensesResponse = await fetch("/api/expense", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const expenseData = await expensesResponse.json();
@@ -52,9 +52,9 @@ export default function Dashboard() {
       }
 
       //Grab total income
-      const incomeSumResponse = await fetch("/api/income/sum", {
+      const incomeSumResponse = await fetch("/api/income/month/sum", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const incomeSumData = await incomeSumResponse.json();
@@ -66,7 +66,7 @@ export default function Dashboard() {
       //Grab total expenses
       const expenseSumResponse = await fetch("/api/expense/sum", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const expenseSumData = await expenseSumResponse.json();

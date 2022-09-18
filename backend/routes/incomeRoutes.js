@@ -10,6 +10,7 @@ const {
   updateIncome,
   getIncomeSum,
   getMonthlyIncomes,
+  getMonthlyIncomeSum,
 } = require("../controllers/incomeController");
 
 const requireAuth = require("../middleware/requireAuth");
@@ -19,6 +20,8 @@ router.use(requireAuth);
 router.get("/", getIncomes);
 
 router.get("/sum", getIncomeSum);
+
+router.get("/month/sum", getMonthlyIncomeSum);
 
 router.get("/month", getMonthlyIncomes);
 

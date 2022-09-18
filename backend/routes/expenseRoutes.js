@@ -10,6 +10,7 @@ const {
   updateExpense,
   getExpenseSum,
   getMonthlyExpenses,
+  getMonthlyExpenseSum,
 } = require("../controllers/expenseController");
 
 const requireAuth = require("../middleware/requireAuth");
@@ -21,6 +22,8 @@ router.get("/", getExpenses);
 router.get("/sum", getExpenseSum);
 
 router.get("/month", getMonthlyExpenses);
+
+router.get("/month/sum", getMonthlyExpenseSum);
 
 router.get("/:id", getExpense);
 
