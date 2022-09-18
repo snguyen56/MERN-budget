@@ -14,12 +14,19 @@ const getExpense = async (req, res) => {
 };
 
 const getExpenses = async (req, res) => {
-  const expenses = await Expense.find({}).sort({ createdAt: -1 });
+  const user_id = req.user._id;
+  const expenses = await Expense.find({ user_id }).sort({ createdAt: -1 });
   res.status(200).json(expenses);
 };
 
 const getExpenseSum = async (req, res) => {
+  const user_id = req.user._id;
   const expense = await Expense.aggregate([
+    {
+      "$match": {
+        user_id: user_id.toString(),
+      },
+    },
     {
       $group: {
         _id: null, //change to user ID
@@ -44,7 +51,10 @@ const getMonthlyExpenses = async (req, res) => {
       $gte: start,
       $lt: end,
     },
-  }).sort({ date: -1 });
+  })
+    .where("user_id")
+    .equals(user_id)
+    .sort({ date: -1 });
   res.status(200).json(expenses);
 };
 
@@ -52,7 +62,14 @@ const createExpense = async (req, res) => {
   const { title, amount, category, date } = req.body;
 
   try {
-    const expense = await Expense.create({ title, amount, category, date });
+    const user_id = req.user._id;
+    const expense = await Expense.create({
+      title,
+      amount,
+      category,
+      date,
+      user_id,
+    });
     res.status(200).json(expense);
   } catch (error) {
     res.status(400).json({ error: error.message });

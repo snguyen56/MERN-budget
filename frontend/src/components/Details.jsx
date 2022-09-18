@@ -1,14 +1,23 @@
 import { useIncomeContext } from "../hooks/useIncomeContext";
 import UpdateTable from "./UpdateTable";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import Table from "react-bootstrap/Table";
 
 export default function Details(props) {
   const { dispatchIncome } = useIncomeContext();
+  const { user } = useAuthContext();
 
   const handleClick = async (id) => {
+    if (!user) {
+      return;
+    }
+
     const response = await fetch("api/income/" + id, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
     });
     const json = await response.json();
 

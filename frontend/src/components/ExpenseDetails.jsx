@@ -1,14 +1,19 @@
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import UpdateTable from "./UpdateTable";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import Table from "react-bootstrap/Table";
 
 export default function Details(props) {
   const { dispatchExpense } = useExpenseContext();
+  const { user } = useAuthContext();
 
   const handleClick = async (id) => {
     const response = await fetch("api/expense/" + id, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
     });
     const json = await response.json();
 

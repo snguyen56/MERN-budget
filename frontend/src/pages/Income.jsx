@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useProfitContext } from "../hooks/useProfitContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
@@ -10,11 +11,17 @@ import Details from "../components/Details";
 
 export default function Income() {
   const { state } = useProfitContext();
+  const { user } = useAuthContext();
+
   const [lastMonth, setLastMonth] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const monthResponse = await fetch("/api/month");
+      const monthResponse = await fetch("/api/month", {
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+        },
+      });
       const monthData = await monthResponse.json();
       if (monthResponse.ok) {
         setLastMonth(monthData[0].total_income);
