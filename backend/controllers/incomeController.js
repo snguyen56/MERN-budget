@@ -14,7 +14,8 @@ const getIncome = async (req, res) => {
 };
 
 const getIncomes = async (req, res) => {
-  const incomes = await Income.find({}).sort({ createdAt: -1 });
+  const user_id = req.user._id;
+  const incomes = await Income.find({ user_id }).sort({ createdAt: -1 });
   res.status(200).json(incomes);
 };
 
@@ -52,7 +53,14 @@ const createIncome = async (req, res) => {
   const { title, amount, category, date } = req.body;
 
   try {
-    const income = await Income.create({ title, amount, category, date });
+    const user_id = req.user._id;
+    const income = await Income.create({
+      title,
+      amount,
+      category,
+      date,
+      user_id,
+    });
     res.status(200).json(income);
   } catch (error) {
     res.status(400).json({ error: error.message });
