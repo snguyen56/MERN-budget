@@ -20,7 +20,13 @@ const getIncomes = async (req, res) => {
 };
 
 const getIncomeSum = async (req, res) => {
+  const user_id = req.user._id;
   const incomes = await Income.aggregate([
+    {
+      "$match": {
+        user_id: user_id.toString(),
+      },
+    },
     {
       $group: {
         _id: null, //change to user ID
@@ -37,6 +43,7 @@ const getIncomeSum = async (req, res) => {
 };
 
 const getMonthlyIncomes = async (req, res) => {
+  const user_id = req.user._id;
   var date = new Date();
   var start = new Date(date.getFullYear(), date.getMonth(), 1);
   var end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
@@ -45,7 +52,10 @@ const getMonthlyIncomes = async (req, res) => {
       $gte: start,
       $lt: end,
     },
-  }).sort({ date: -1 });
+  })
+    .where("user_id")
+    .equals(user_id)
+    .sort({ date: -1 });
   res.status(200).json(incomes);
 };
 

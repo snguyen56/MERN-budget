@@ -24,6 +24,10 @@ const monthSchema = new Schema(
       default: 0,
       required: true,
     },
+    user_id: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
