@@ -3,6 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const incomeRoutes = require("./routes/incomeRoutes");
 const expenseRoutes = require("./routes/expenseRoutes");
+const monthRoutes = require("./routes/monthRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const port = process.env.PORT || 4000;
 
@@ -13,6 +15,10 @@ app.use(express.json());
 app.use("/api/income", incomeRoutes);
 
 app.use("/api/expense", expenseRoutes);
+
+app.use("/api/month", monthRoutes);
+
+app.use("/api/user", userRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

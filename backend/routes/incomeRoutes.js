@@ -8,9 +8,19 @@ const {
   createIncome,
   deleteIncome,
   updateIncome,
+  getIncomeSum,
+  getMonthlyIncomes,
 } = require("../controllers/incomeController");
 
+const requireAuth = require("../middleware/requireAuth");
+
+router.use(requireAuth);
+
 router.get("/", getIncomes);
+
+router.get("/sum", getIncomeSum);
+
+router.get("/month", getMonthlyIncomes);
 
 router.get("/:id", getIncome);
 

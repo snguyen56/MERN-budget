@@ -1,0 +1,57 @@
+@import "custom.scss";
+
+.wrapper {
+  display: flex;
+}
+
+.sidebar {
+  display: none;
+}
+
+@include media-breakpoint-up(lg) {
+  .sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #444e5a;
+  }
+}
+
+.content {
+  text-align: center;
+}
+
+@include media-breakpoint-up(lg) {
+  .content {
+    margin-left: 260px;
+    margin-right: 10px;
+    width: calc(100% - 250px);
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .custom-class {
+    margin-top: 12px;
+  }
+}
+
+i {
+  cursor: pointer;
+}
+
+ul {
+  margin: 0;
+  list-style: none;
+  float: left;
+}
+
+input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}

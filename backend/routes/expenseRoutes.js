@@ -8,9 +8,19 @@ const {
   createExpense,
   deleteExpense,
   updateExpense,
+  getExpenseSum,
+  getMonthlyExpenses,
 } = require("../controllers/expenseController");
 
+const requireAuth = require("../middleware/requireAuth");
+
+router.use(requireAuth);
+
 router.get("/", getExpenses);
+
+router.get("/sum", getExpenseSum);
+
+router.get("/month", getMonthlyExpenses);
 
 router.get("/:id", getExpense);
 

@@ -12,6 +12,20 @@ const expenseSchema = new Schema(
       type: Number,
       required: true,
     },
+    category: {
+      type: String,
+      default: "Misc",
+      required: true,
+    },
+    date: {
+      type: Date,
+      default: Date.now,
+      required: true,
+    },
+    user_id: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
