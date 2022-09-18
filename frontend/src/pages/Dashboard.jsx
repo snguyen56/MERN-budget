@@ -41,7 +41,11 @@ export default function Dashboard() {
       }
 
       //Grab expense data
-      const expensesResponse = await fetch("/api/expense");
+      const expensesResponse = await fetch("/api/expense", {
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+        },
+      });
       const expenseData = await expensesResponse.json();
       if (expensesResponse.ok) {
         dispatchExpense({ type: "SET_EXPENSE", payload: expenseData });
@@ -60,7 +64,11 @@ export default function Dashboard() {
       }
 
       //Grab total expenses
-      const expenseSumResponse = await fetch("/api/expense/sum");
+      const expenseSumResponse = await fetch("/api/expense/sum", {
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+        },
+      });
       const expenseSumData = await expenseSumResponse.json();
       console.log("total expenses: ", expenseSumData[0].total);
       if (expenseSumResponse.ok) {

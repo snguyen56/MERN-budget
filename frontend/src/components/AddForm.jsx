@@ -1,4 +1,5 @@
 import { useExpenseContext } from "../hooks/useExpenseContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -9,6 +10,7 @@ const { useState } = require("react");
 
 export default function AddForm(props) {
   const { dispatchExpense } = useExpenseContext();
+  const { user } = useAuthContext();
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -35,6 +37,7 @@ export default function AddForm(props) {
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`,
       },
     });
     const json = await response.json();
