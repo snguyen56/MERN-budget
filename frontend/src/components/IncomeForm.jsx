@@ -4,11 +4,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const { useState } = require("react");
 
 const IncomeForm = () => {
   const { dispatchIncome } = useIncomeContext();
+  const { user } = useAuthContext();
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -24,6 +26,11 @@ const IncomeForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
+
     const income = { title, amount, category, date };
 
     const response = await fetch("/api/income", {
@@ -31,6 +38,7 @@ const IncomeForm = () => {
       body: JSON.stringify(income),
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`,
       },
     });
     const json = await response.json();
