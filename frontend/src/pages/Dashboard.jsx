@@ -64,7 +64,7 @@ export default function Dashboard() {
       }
 
       //Grab total expenses
-      const expenseSumResponse = await fetch("/api/expense/sum", {
+      const expenseSumResponse = await fetch("/api/expense/month/sum", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
