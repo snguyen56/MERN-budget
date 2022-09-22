@@ -113,7 +113,7 @@ export default function AddForm(props) {
               <Form.Control
                 type="date"
                 placeholder="Enter Date"
-                onChange={(event) => setDate(event.target.value)}
+                onChange={(event) => setDate(new Date(event.target.value))}
                 value={date}
               />
             </Form.Group>
