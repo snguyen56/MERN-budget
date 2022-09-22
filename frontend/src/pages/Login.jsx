@@ -5,8 +5,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin21@admin.com");
+  const [password, setPassword] = useState("ABC123abc!");
   const { login, error, isLoading } = useLogin();
 
   const handleSubmit = async (event) => {
