@@ -37,7 +37,7 @@ export default function AddForm(props) {
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
     const json = await response.json();
@@ -113,9 +113,7 @@ export default function AddForm(props) {
               <Form.Control
                 type="date"
                 placeholder="Enter Date"
-                onChange={(event) => {
-                  setDate(event.target.value);
-                }}
+                onChange={(event) => setDate(new Date(event.target.value))}
                 value={date}
               />
             </Form.Group>

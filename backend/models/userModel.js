@@ -4,6 +4,20 @@ const validator = require("validator");
 
 const Schema = mongoose.Schema;
 
+const budgetSchema = new Schema({
+  name: { type: String },
+  budget: { type: Number },
+});
+
+const monthSchema = new Schema({
+  date: { type: Date, required: true },
+  totalIncome: { type: Number, default: 0, required: true },
+  totalExpenses: { type: Number, default: 0, required: true },
+  grossProfit: { type: Number, default: 0, required: true },
+});
+
+const taskSchema = new Schema({ name: { type: String } });
+
 const userSchema = new Schema({
   email: {
     type: String,
@@ -14,6 +28,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  budgets: [budgetSchema],
+  currentMonth: monthSchema,
+  tasks: [taskSchema],
 });
 
 //signup method
@@ -36,7 +53,23 @@ userSchema.statics.signup = async function (email, password) {
   const salt = await bcryt.genSalt();
   const hash = await bcryt.hash(password, salt);
 
-  const user = await this.create({ email, password: hash });
+  var date = new Date();
+  var currentMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+
+  const user = await this.create({
+    email,
+    password: hash,
+    budgets: [
+      { name: "Utility", budget: 0 },
+      { name: "Groceries", budget: 0 },
+      { name: "Entertainment", budget: 0 },
+      { name: "Insurance", budget: 0 },
+      { name: "Rent/Mortgage", budget: 0 },
+      { name: "Food/Restaurant", budget: 0 },
+      { name: "Misc", budget: 0 },
+    ],
+    currentMonth: { date: currentMonth },
+  });
   return user;
 };
 

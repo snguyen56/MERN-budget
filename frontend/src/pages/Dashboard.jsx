@@ -3,6 +3,7 @@ import { useIncomeContext } from "../hooks/useIncomeContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useProfitContext } from "../hooks/useProfitContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { Link } from "react-router-dom";
 
 import LineChart from "../components/LineChart";
 
@@ -161,7 +162,9 @@ export default function Dashboard() {
                   <ProgressBar className="mt-5" now={500} max={1000} />
                 </Card.Body>
                 <Card.Footer className="text-end">
-                  <Button variant="link">See all budgets</Button>
+                  <Button variant="link" as={Link} to="/budgets">
+                    See all budgets
+                  </Button>
                 </Card.Footer>
               </Card>
             </Col>

@@ -55,27 +55,28 @@ export default function Income() {
       </Row>
       <Row className="my-4">
         <Col className="d-lg-flex flex-lg-column justify-content-lg-between">
-          <Card style={{ height: "20%" }}>
+          <Card style={{ height: "100px" }}>
             <Card.Body>
               <Card.Title>Last Month's Income</Card.Title>
-
-              {Intl.NumberFormat("en-US", {
-                style: "percent",
-                minimumFractionDigits: 2,
-              }).format(lastMonth / state.income - 1)}
+              <Card.Text>
+                {Intl.NumberFormat("en-US", {
+                  style: "percent",
+                  minimumFractionDigits: 2,
+                }).format(lastMonth / state.income - 1)}
+              </Card.Text>
             </Card.Body>
           </Card>
-          <Card style={{ height: "20%" }}>
+          <Card style={{ height: "100px" }}>
             <Card.Body>
               <Card.Title>Placeholder</Card.Title>
             </Card.Body>
           </Card>
-          <Card style={{ height: "20%" }}>
+          <Card style={{ height: "100px" }}>
             <Card.Body>
               <Card.Title>Placeholder</Card.Title>
             </Card.Body>
           </Card>
-          <Card style={{ height: "20%" }}>
+          <Card style={{ height: "100px" }}>
             <Card.Body>
               <Card.Title>Placeholder</Card.Title>
             </Card.Body>
