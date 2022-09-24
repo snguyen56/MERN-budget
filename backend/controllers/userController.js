@@ -44,4 +44,26 @@ const updateBudget = async (req, res) => {
   }
 };
 
-module.exports = { loginUser, signupUser, updateBudget };
+const addGoal = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  try {
+    user.tasks.push({ ...req.body });
+    user.save();
+    res.status(200).json(user.tasks);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+const deleteGoals = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  try {
+    user.tasks.updateMany({ _id: req.body._id }, { tasks: [...req.body] });
+    user.save();
+    res.status(200).json(user.tasks);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+module.exports = { loginUser, signupUser, updateBudget, addGoal, deleteGoals };
