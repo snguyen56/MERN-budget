@@ -27,19 +27,21 @@ export default function Sidebar() {
         Budgets
       </Nav.Link>
 
-      <Stack direction="horizontal" className="d-flex justify-content-around">
-        {!user && (
-          <div>
-            <Nav.Link as={Link} to="/login" eventKey="link-4">
-              login
-            </Nav.Link>
-            <Nav.Link as={Link} to="/signup" eventKey="link-5">
-              signup
-            </Nav.Link>
-          </div>
-        )}
-        <Button onClick={handClick}>Logout</Button>
-      </Stack>
+      {!user && (
+        <Stack direction="horizontal" className="d-flex justify-content-around">
+          <Nav.Link as={Link} to="/login" eventKey="link-4">
+            login
+          </Nav.Link>
+          <Nav.Link as={Link} to="/signup" eventKey="link-5">
+            signup
+          </Nav.Link>
+        </Stack>
+      )}
+      {user && (
+        <div>
+          <Button onClick={handClick}>Logout</Button>
+        </div>
+      )}
     </Nav>
   );
 }

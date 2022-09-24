@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useAuthContext } from "../hooks/useAuthContext";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -7,7 +6,6 @@ import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 
 export default function EditBudget({ data }) {
-  const { user } = useAuthContext();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);

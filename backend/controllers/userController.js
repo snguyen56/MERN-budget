@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
@@ -32,4 +33,15 @@ const signupUser = async (req, res) => {
   }
 };
 
-module.exports = { loginUser, signupUser };
+const updateBudget = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  try {
+    user.budgets.id(req.body._id).budget = req.body.budget;
+    user.save();
+    res.status(200).json(user.budgets.id(req.body._id));
+  } catch (error) {
+    return res.status(404).json({ error: "Income not found" });
+  }
+};
+
+module.exports = { loginUser, signupUser, updateBudget };
