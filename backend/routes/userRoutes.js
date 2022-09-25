@@ -20,4 +20,5 @@ router.use(requireAuth);
 
 //update budget
 router.patch("/budget", updateBudget);
+
 module.exports = router;

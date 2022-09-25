@@ -23,7 +23,7 @@ export default function Details(props) {
   return (
     <>
       {props.expenses?.length > 0 ? (
-        <Table className="my-0" size="" hover borderless responsive>
+        <Table className="my-0 " size="" hover borderless responsive>
           <thead>
             <tr>
               <th>Title</th>

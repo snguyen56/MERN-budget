@@ -20,7 +20,14 @@ export default function AddForm(props) {
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setTitle("");
+    setAmount("");
+    setCategory("Misc");
+    setDate("");
+    setError(null);
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
 
   const handleSubmit = async (event) => {
@@ -28,7 +35,7 @@ export default function AddForm(props) {
 
     console.log("category is: ", category);
 
-    const data = { title, amount, category };
+    const data = { title, amount, category, date };
 
     const mode = props.type;
 
@@ -113,7 +120,7 @@ export default function AddForm(props) {
               <Form.Control
                 type="date"
                 placeholder="Enter Date"
-                onChange={(event) => setDate(new Date(event.target.value))}
+                onChange={(event) => setDate(event.target.value)}
                 value={date}
               />
             </Form.Group>

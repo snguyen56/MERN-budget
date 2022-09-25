@@ -6,6 +6,8 @@ import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Card from "react-bootstrap/Card";
+
+import DoughnutChart from "../components/DoughnutChart";
 import LineChart from "../components/LineChart";
 import Details from "../components/Details";
 
@@ -14,22 +16,36 @@ export default function Income() {
   const { user } = useAuthContext();
 
   const [lastMonth, setLastMonth] = useState(null);
+  const [income, setIncome] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      //Grab budgets data
+      const budgetsResponse = await fetch("/api/income/category", {
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+        },
+      });
+      const data = await budgetsResponse.json();
+      if (budgetsResponse.ok) {
+        setIncome(data);
+        console.log(data);
+      }
+
+      //Grab last month's data
       const monthResponse = await fetch("/api/month", {
         headers: {
           "Authorization": `Bearer ${user.token}`,
         },
       });
       const monthData = await monthResponse.json();
-      if (monthResponse.ok) {
+      if (monthResponse.ok && monthData[0]) {
         setLastMonth(monthData[0].total_income);
-        console.log(monthData);
       }
-      console.log(state);
     };
-    fetchData();
+    if (user) {
+      fetchData();
+    }
   }, []);
 
   return (
@@ -49,6 +65,27 @@ export default function Income() {
           <Card style={{ height: "45vh" }}>
             <Card.Body>
               <Card.Title>Income Sources</Card.Title>
+              <Card.Text>
+                <div className="d-flex justify-content-around">
+                  <div className="w-50">
+                    {income?.map((item) => (
+                      <p className="text-start " key={item._id}>
+                        {item._id}
+                      </p>
+                    ))}
+                  </div>
+                  <div className="w-50">
+                    {income?.map((item) => (
+                      <p className="text-end " key={item._id}>
+                        {Intl.NumberFormat("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        }).format(item.total)}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -95,7 +132,7 @@ export default function Income() {
             <Card.Body>
               <Card.Title>Circle Graph</Card.Title>
               <div style={{ height: "90%" }}>
-                <LineChart />
+                {income && <DoughnutChart info={income} />}
               </div>
             </Card.Body>
           </Card>

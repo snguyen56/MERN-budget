@@ -59,6 +59,29 @@ const getMonthlyIncomes = async (req, res) => {
   res.status(200).json(incomes);
 };
 
+const getIncomeCategory = async (req, res) => {
+  const user_id = req.user._id;
+  const income = await Income.aggregate([
+    {
+      "$match": {
+        user_id: user_id.toString(),
+      },
+    },
+    {
+      $group: {
+        _id: "$category",
+        total: {
+          $sum: "$amount",
+        },
+      },
+    },
+  ]).sort("-total");
+  if (income.length == 0) {
+    return res.status(404).json({ error: "No income data available" });
+  }
+  res.status(200).json(income);
+};
+
 const createIncome = async (req, res) => {
   const { title, amount, category, date } = req.body;
 
@@ -114,4 +137,5 @@ module.exports = {
   updateIncome,
   getIncomeSum,
   getMonthlyIncomes,
+  getIncomeCategory,
 };
