@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import EditBudget from "../components/EditBudget";
 
@@ -8,17 +8,35 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
 
 export default function Budgets() {
+  const [budgetAmount, setBudgetAmount] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      //Grab budgets data
+      const budgetsResponse = await fetch("/api/expense/category", {
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+        },
+      });
+      const data = await budgetsResponse.json();
+      if (budgetsResponse.ok) {
+      }
+    };
+    if (user) {
+      fetchData();
+    }
+  }, []);
   const [budget, setBudget] = useState("No Expenses Selected");
   const { user } = useAuthContext();
+
   return (
     <Container fluid className="mt-4">
       <Row>
         <Col md={12} lg={12} xl={4}>
           {user.user.budgets.map((budget) => (
             <Card
+              key={budget.name}
               onClick={() => {
                 setBudget(budget.name + " Expenses");
               }}
@@ -26,6 +44,7 @@ export default function Budgets() {
               <Card.Body>
                 <Card.Title className="d-flex justify-content-between">
                   <div>{budget.name}</div>
+                  <div>{budget?.amount}</div>
                   <div>
                     {Intl.NumberFormat("en-US", {
                       style: "currency",
@@ -49,9 +68,10 @@ export default function Budgets() {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
+                    <th>Title</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>

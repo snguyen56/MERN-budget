@@ -20,7 +20,14 @@ const IncomeForm = () => {
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setTitle("");
+    setAmount("");
+    setCategory("Misc");
+    setDate("");
+    setError(null);
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
 
   const handleSubmit = async (event) => {

@@ -29,7 +29,7 @@ const getExpenseSum = async (req, res) => {
     },
     {
       $group: {
-        _id: null, //change to user ID
+        _id: null,
         total: {
           $sum: "$amount",
         },
@@ -68,10 +68,6 @@ const getMonthlyExpenseSum = async (req, res) => {
     {
       $match: {
         user_id: user_id.toString(),
-      },
-    },
-    {
-      $match: {
         date: {
           $gte: start,
           $lt: end,
@@ -91,24 +87,48 @@ const getMonthlyExpenseSum = async (req, res) => {
     return res.status(404).json({ error: "No expense data available" });
   }
   res.status(200).json(expenses);
-};
 
-const createExpense = async (req, res) => {
-  const { title, amount, category, date } = req.body;
-
-  try {
+  const getExpensesCategory = async (req, res) => {
     const user_id = req.user._id;
-    const expense = await Expense.create({
-      title,
-      amount,
-      category,
-      date,
-      user_id,
-    });
+    const expense = await Expense.aggregate([
+      {
+        $match: {
+          user_id: user_id.toString(),
+        },
+      },
+      {
+        $match: {
+          $group: {
+            _id: "$category",
+            total: {
+              $sum: "$amount",
+            },
+          },
+        },
+      },
+    ]).sort("-total");
+    if (expense.length == 0) {
+      return res.status(404).json({ error: "No expense data available" });
+    }
     res.status(200).json(expense);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+  };
+
+  const createExpense = async (req, res) => {
+    const { title, amount, category, date } = req.body;
+    try {
+      const user_id = req.user._id;
+      const expense = await Expense.create({
+        title,
+        amount,
+        category,
+        date,
+        user_id,
+      });
+      res.status(200).json(expense);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
 };
 
 const deleteExpense = async (req, res) => {
@@ -149,4 +169,5 @@ module.exports = {
   getExpenseSum,
   getMonthlyExpenses,
   getMonthlyExpenseSum,
+  getExpensesCategory,
 };
