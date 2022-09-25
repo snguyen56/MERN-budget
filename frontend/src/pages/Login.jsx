@@ -30,7 +30,7 @@ export default function Login() {
       <Form.Group className="mb-3" controlId="formTitle">
         <Form.Label>Password:</Form.Label>
         <Form.Control
-          type="text"
+          type="password"
           placeholder="Enter Password"
           onChange={(event) => setPassword(event.target.value)}
           value={password}
