@@ -115,7 +115,7 @@ export default function Expenses() {
           <Card style={{ height: "47vh" }}>
             <Card.Body>
               <Card.Title>Spending By Categories</Card.Title>
-              <Card.Text className="h-100">
+              <Card.Text className="mt-3 h-100">
                 <div style={{ height: "90%" }}>
                   {spending && <DoughnutChart info={spending} />}
                 </div>

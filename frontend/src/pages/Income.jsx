@@ -65,26 +65,16 @@ export default function Income() {
           <Card style={{ height: "45vh" }}>
             <Card.Body>
               <Card.Title>Income Sources</Card.Title>
-              <Card.Text>
-                <div className="d-flex justify-content-around">
-                  <div className="w-50">
-                    {income?.map((item) => (
-                      <p className="text-start " key={item._id}>
-                        {item._id}
-                      </p>
-                    ))}
-                  </div>
-                  <div className="w-50">
-                    {income?.map((item) => (
-                      <p className="text-end " key={item._id}>
-                        {Intl.NumberFormat("en-US", {
-                          style: "currency",
-                          currency: "USD",
-                        }).format(item.total)}
-                      </p>
-                    ))}
-                  </div>
-                </div>
+              <Card.Text className="mt-4">
+                {income?.map((item) => (
+                  <p className="text-center " key={item._id}>
+                    {item._id}{" "}
+                    {Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(item.total)}
+                  </p>
+                ))}
               </Card.Text>
             </Card.Body>
           </Card>

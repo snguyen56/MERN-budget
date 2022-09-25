@@ -11,6 +11,9 @@ import Table from "react-bootstrap/Table";
 
 export default function Budgets() {
   const [budgetAmount, setBudgetAmount] = useState(null);
+  const [budget, setBudget] = useState("No Expenses Selected");
+  const { user } = useAuthContext();
+
   useEffect(() => {
     const fetchData = async () => {
       //Grab budgets data
@@ -22,45 +25,56 @@ export default function Budgets() {
       const data = await budgetsResponse.json();
       console.log(data);
       if (budgetsResponse.ok) {
-        setBudgetAmount(data);
+        // setBudgetAmount(data);
+        const renamedData = data.map(({ _id, ...e }) => ({ ...e, name: _id }));
+        const newData = user.user.budgets.map((item) => ({
+          ...item,
+          ...renamedData.find((budget) => item.name === budget.name),
+        }));
+        setBudgetAmount(newData);
       }
     };
     if (user) {
       fetchData();
     }
-  }, []);
-  const [budget, setBudget] = useState("No Expenses Selected");
-  const { user } = useAuthContext();
+  }, [setBudgetAmount]);
 
   return (
     <Container fluid className="mt-4">
       <Row>
         <Col md={12} lg={12} xl={4}>
-          {user.user.budgets.map((budget) => (
-            <Card
-              key={budget.name}
-              onClick={() => {
-                setBudget(budget.name + " Expenses");
-              }}
-            >
-              <Card.Body>
-                <Card.Title className="d-flex justify-content-between">
-                  <div>{budget.name}</div>
-                  <div>{budget?.amount}</div>
-                  <div>
+          {budgetAmount &&
+            budgetAmount.map((budget) => (
+              <Card
+                key={budget.name}
+                onClick={() => {
+                  setBudget(budget.name + " Expenses");
+                }}
+              >
+                <Card.Body>
+                  <Card.Title className="d-flex justify-content-between">
+                    <div>{budget.name}</div>
+                    {Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(budget.total ? budget.total : 0)}{" "}
+                    /{" "}
                     {Intl.NumberFormat("en-US", {
                       style: "currency",
                       currency: "USD",
                     }).format(budget.budget)}
-                  </div>
-                </Card.Title>
-                <Card.Text className="text-end">
-                  <ProgressBar className="my-2" now={500} max={1000} />
-                  <EditBudget data={budget} />
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          ))}
+                  </Card.Title>
+                  <Card.Text className="text-end">
+                    <ProgressBar
+                      className="my-2"
+                      now={budget.total ? budget.total : 0}
+                      max={100}
+                    />
+                    <EditBudget data={budget} />
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            ))}
         </Col>
         <Col>
           <Card className="h-100">
