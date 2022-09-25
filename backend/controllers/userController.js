@@ -44,6 +44,15 @@ const updateBudget = async (req, res) => {
   }
 };
 
+const getGoals = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  try {
+    res.status(200).json(user.tasks);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
 const addGoal = async (req, res) => {
   const user = await User.findById(req.user.id);
   try {
@@ -58,12 +67,26 @@ const addGoal = async (req, res) => {
 const deleteGoals = async (req, res) => {
   const user = await User.findById(req.user.id);
   try {
-    user.tasks.updateMany({ _id: req.body._id }, { tasks: [...req.body] });
+    const doc = await User.updateMany(
+      { _id: user._id },
+      {
+        $pull: {
+          tasks: req.body,
+        },
+      }
+    );
     user.save();
-    res.status(200).json(user.tasks);
+    res.status(200).json(doc);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
 
-module.exports = { loginUser, signupUser, updateBudget, addGoal, deleteGoals };
+module.exports = {
+  loginUser,
+  signupUser,
+  updateBudget,
+  getGoals,
+  addGoal,
+  deleteGoals,
+};

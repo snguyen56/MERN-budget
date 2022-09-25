@@ -87,48 +87,45 @@ const getMonthlyExpenseSum = async (req, res) => {
     return res.status(404).json({ error: "No expense data available" });
   }
   res.status(200).json(expenses);
+};
+const getExpensesCategory = async (req, res) => {
+  const user_id = req.user._id;
+  const expense = await Expense.aggregate([
+    {
+      $match: {
+        user_id: user_id.toString(),
+      },
+    },
+    {
+      $group: {
+        _id: "$category",
+        total: {
+          $sum: "$amount",
+        },
+      },
+    },
+  ]).sort("-total");
+  if (expense.length == 0) {
+    return res.status(404).json({ error: "No expense data available" });
+  }
+  res.status(200).json(expense);
+};
 
-  const getExpensesCategory = async (req, res) => {
+const createExpense = async (req, res) => {
+  const { title, amount, category, date } = req.body;
+  try {
     const user_id = req.user._id;
-    const expense = await Expense.aggregate([
-      {
-        $match: {
-          user_id: user_id.toString(),
-        },
-      },
-      {
-        $match: {
-          $group: {
-            _id: "$category",
-            total: {
-              $sum: "$amount",
-            },
-          },
-        },
-      },
-    ]).sort("-total");
-    if (expense.length == 0) {
-      return res.status(404).json({ error: "No expense data available" });
-    }
+    const expense = await Expense.create({
+      title,
+      amount,
+      category,
+      date,
+      user_id,
+    });
     res.status(200).json(expense);
-  };
-
-  const createExpense = async (req, res) => {
-    const { title, amount, category, date } = req.body;
-    try {
-      const user_id = req.user._id;
-      const expense = await Expense.create({
-        title,
-        amount,
-        category,
-        date,
-        user_id,
-      });
-      res.status(200).json(expense);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  };
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 const deleteExpense = async (req, res) => {
