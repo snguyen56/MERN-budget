@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 
 const Income = require("../models/incomeModel");
 const {
@@ -14,6 +13,8 @@ const {
 } = require("../controllers/incomeController");
 
 const requireAuth = require("../middleware/requireAuth");
+
+const router = express.Router();
 
 router.use(requireAuth);
 
