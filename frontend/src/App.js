@@ -8,6 +8,7 @@ import Expenses from "./pages/Expenses";
 import Income from "./pages/Income";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Budgets from "./pages/Budgets";
 import { useAuthContext } from "./hooks/useAuthContext";
 
 function App() {
@@ -39,6 +40,10 @@ function App() {
           <Route
             path="/expenses"
             element={user ? <Expenses /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/budgets"
+            element={user ? <Budgets /> : <Navigate to="/login" />}
           />
         </Routes>
       </div>

@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useIncomeContext } from "../hooks/useIncomeContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useProfitContext } from "../hooks/useProfitContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { Link } from "react-router-dom";
 
 import LineChart from "../components/LineChart";
 
@@ -20,6 +21,8 @@ import Details from "../components/Details";
 import IncomeForm from "../components/IncomeForm";
 import AddForm from "../components/AddForm";
 import ExpenseDetails from "../components/ExpenseDetails";
+import AddTask from "../components/AddTask";
+import DeleteTask from "../components/DeleteTask";
 
 export default function Dashboard() {
   const { incomes, dispatchIncome } = useIncomeContext();
@@ -27,12 +30,14 @@ export default function Dashboard() {
   const { state, setIncome, setExpense } = useProfitContext();
   const { user } = useAuthContext();
 
+  const [deleteList, setDeleteList] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       //Grab income data
       const incomesResponse = await fetch("/api/income", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const incomeData = await incomesResponse.json();
@@ -43,7 +48,7 @@ export default function Dashboard() {
       //Grab expense data
       const expensesResponse = await fetch("/api/expense", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const expenseData = await expensesResponse.json();
@@ -52,9 +57,9 @@ export default function Dashboard() {
       }
 
       //Grab total income
-      const incomeSumResponse = await fetch("/api/income/sum", {
+      const incomeSumResponse = await fetch("/api/income/month/sum", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const incomeSumData = await incomeSumResponse.json();
@@ -64,9 +69,9 @@ export default function Dashboard() {
       }
 
       //Grab total expenses
-      const expenseSumResponse = await fetch("/api/expense/sum", {
+      const expenseSumResponse = await fetch("/api/expense/month/sum", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const expenseSumData = await expenseSumResponse.json();
@@ -80,6 +85,17 @@ export default function Dashboard() {
       fetchData();
     }
   }, [dispatchIncome, dispatchExpense, user]);
+
+  // Add/Remove checked item from list
+  const handleCheck = (event) => {
+    var updatedList = [...deleteList];
+    if (event.target.checked) {
+      updatedList = [...deleteList, event.target.value];
+    } else {
+      updatedList.splice(deleteList.indexOf(event.target.value), 1);
+    }
+    setDeleteList(updatedList);
+  };
 
   return (
     <Container fluid>
@@ -161,7 +177,9 @@ export default function Dashboard() {
                   <ProgressBar className="mt-5" now={500} max={1000} />
                 </Card.Body>
                 <Card.Footer className="text-end">
-                  <Button variant="link">See all budgets</Button>
+                  <Button variant="link" as={Link} to="/budgets">
+                    See all budgets
+                  </Button>
                 </Card.Footer>
               </Card>
             </Col>
@@ -173,21 +191,24 @@ export default function Dashboard() {
           <Card style={{ height: "47vh" }}>
             <Card.Body>
               <Card.Title>Goals</Card.Title>
-              <ul className="d-flex flex-column mt-3 px-1">
-                <li>
-                  <input type="checkbox" id="goal1" />{" "}
-                  <label htmlFor="goal1">Goal</label>
-                </li>
-                <li>
-                  <input type="checkbox" id="goal2" />{" "}
-                  <label htmlFor="goal2">Goal</label>
-                </li>
+              <ul className="d-flex flex-column mt-3 px-1 text-start">
+                {user.user.tasks.map((task, index) => (
+                  <li>
+                    <input
+                      type="checkbox"
+                      id={index}
+                      onChange={handleCheck}
+                      value={task._id}
+                    />{" "}
+                    <label htmlFor={index}>{task.name}</label>
+                  </li>
+                ))}
               </ul>
             </Card.Body>
             <Card.Footer className="text-end">
               <ButtonGroup>
-                <Button variant="primary">Add Goal</Button>
-                <Button variant="primary">Delete Goals</Button>
+                <AddTask />
+                <DeleteTask data={deleteList} />
               </ButtonGroup>
             </Card.Footer>
           </Card>

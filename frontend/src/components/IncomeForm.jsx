@@ -20,7 +20,14 @@ const IncomeForm = () => {
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setTitle("");
+    setAmount("");
+    setCategory("Misc");
+    setDate("");
+    setError(null);
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
 
   const handleSubmit = async (event) => {
@@ -32,7 +39,7 @@ const IncomeForm = () => {
     }
 
     const income = { title, amount, category, date };
-
+    income.date = income.date.replace(/-/g, "/");
     const response = await fetch("/api/income", {
       method: "POST",
       body: JSON.stringify(income),

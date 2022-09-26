@@ -32,9 +32,9 @@
   }
 }
 
-@include media-breakpoint-down(lg) {
-  .custom-class {
-    margin-top: 12px;
+@include media-breakpoint-down(xxl) {
+  tr td {
+    max-width: 50px;
   }
 }
 

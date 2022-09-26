@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 
 const Income = require("../models/incomeModel");
 const {
@@ -10,24 +9,32 @@ const {
   updateIncome,
   getIncomeSum,
   getMonthlyIncomes,
+  getMonthlyIncomeSum,
+  getIncomeCategory,
 } = require("../controllers/incomeController");
 
 const requireAuth = require("../middleware/requireAuth");
 
+const router = express.Router();
+
 router.use(requireAuth);
 
-router.get("/", getIncomes);
+router.get("/category", getIncomeCategory);
 
 router.get("/sum", getIncomeSum);
+
+router.get("/month/sum", getMonthlyIncomeSum);
 
 router.get("/month", getMonthlyIncomes);
 
 router.get("/:id", getIncome);
 
-router.post("/", createIncome);
-
 router.delete("/:id", deleteIncome);
 
 router.patch("/:id", updateIncome);
+
+router.get("/", getIncomes);
+
+router.post("/", createIncome);
 
 module.exports = router;
