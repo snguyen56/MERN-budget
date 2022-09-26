@@ -8,6 +8,8 @@ const {
   loginUser,
   signupUser,
   updateBudget,
+  addTask,
+  deleteTask,
 } = require("../controllers/userController");
 
 //login
@@ -20,5 +22,11 @@ router.use(requireAuth);
 
 //update budget
 router.patch("/budget", updateBudget);
+
+//create task
+router.post("/task", addTask);
+
+//delete task
+router.delete("/task", deleteTask);
 
 module.exports = router;

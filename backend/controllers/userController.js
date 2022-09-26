@@ -44,4 +44,26 @@ const updateBudget = async (req, res) => {
   }
 };
 
-module.exports = { loginUser, signupUser, updateBudget };
+const addTask = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  try {
+    user.tasks.push({ ...req.body });
+    user.save();
+    res.status(200).json(user.tasks);
+  } catch (error) {
+    return res.status(404).json({ error: "Income not found" });
+  }
+};
+
+const deleteTask = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  try {
+    user.tasks = user.tasks.filter((task) => req.body.includes(task._id));
+    user.save();
+    res.status(200).json(user.tasks);
+  } catch (error) {
+    return res.status(404).json({ error: "Income not found" });
+  }
+};
+
+module.exports = { loginUser, signupUser, updateBudget, addTask, deleteTask };

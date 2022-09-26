@@ -56,11 +56,13 @@ export default function Budgets() {
                     {Intl.NumberFormat("en-US", {
                       style: "currency",
                       currency: "USD",
+                      minimumFractionDigits: 2,
                     }).format(budget.total ? budget.total : 0)}{" "}
                     /{" "}
                     {Intl.NumberFormat("en-US", {
                       style: "currency",
                       currency: "USD",
+                      minimumFractionDigits: 2,
                     }).format(budget.budget)}
                   </Card.Title>
                   <Card.Text className="text-end">
