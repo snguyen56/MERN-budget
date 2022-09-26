@@ -1,4 +1,5 @@
 import { useExpenseContext } from "../hooks/useExpenseContext";
+import UpdateTable from "./UpdateTable";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 import Table from "react-bootstrap/Table";
@@ -11,7 +12,7 @@ export default function Details(props) {
     const response = await fetch("api/expense/" + id, {
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
     const json = await response.json();
@@ -41,7 +42,7 @@ export default function Details(props) {
                 <td>{expense.category}</td>
                 <td>{new Date(expense.date).toLocaleDateString()}</td>
                 <td className="ps-0">
-                  <i className="bi bi-pencil me-2"></i>
+                  <UpdateTable type="expense" data={expense} />
                   <i
                     className="bi bi-trash"
                     onClick={() => handleClick(expense._id)}

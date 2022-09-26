@@ -19,10 +19,11 @@ export default function Budgets() {
       //Grab budgets data
       const budgetsResponse = await fetch("/api/expense/category", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const data = await budgetsResponse.json();
+      console.log(data);
       if (budgetsResponse.ok) {
         // setBudgetAmount(data);
         const renamedData = data.map(({ _id, ...e }) => ({ ...e, name: _id }));

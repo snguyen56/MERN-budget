@@ -1,84 +1,75 @@
+import { useIncomeContext } from "../hooks/useIncomeContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
-import { useAuthContext } from "../hooks/useAuthContext";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import InputGroup from "react-bootstrap/InputGroup";
 
 const { useState } = require("react");
 
-export default function AddForm(props) {
+const UpdateTable = (props) => {
+  const { dispatchIncome } = useIncomeContext();
   const { dispatchExpense } = useExpenseContext();
-  const { user } = useAuthContext();
 
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [category, setCategory] = useState("Misc");
-  const [date, setDate] = useState("");
+  const [title, setTitle] = useState(props.data.title);
+  const [amount, setAmount] = useState(props.data.amount);
+  const [category, setCategory] = useState(props.data.category);
+  const [date, setDate] = useState(
+    new Date(props.data.date).toLocaleDateString("en-CA")
+  );
+
   const [error, setError] = useState(null);
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => {
-    setTitle("");
-    setAmount("");
-    setCategory("Misc");
-    setDate("");
-    setError(null);
-    setShow(false);
-  };
+  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("category is: ", category);
-
     const data = { title, amount, category, date };
     data.date = data.date.replace(/-/g, "/");
-    const mode = props.type;
-
-    const response = await fetch("/api/" + mode, {
-      method: "POST",
+    const response = await fetch("api/" + props.type + "/" + props.data._id, {
+      method: "PATCH",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
       },
     });
-    const json = await response.json();
+
+    const response2 = await fetch("api/" + props.type + "/");
+
+    const json = await response2.json();
 
     if (!response.ok) {
       setError(json.error);
       console.log(error);
     } else if (response.ok) {
-      setTitle("");
-      setAmount("");
-      setCategory("Misc");
-      setDate("");
       setError(null);
-      console.log("new " + mode + " added:", json);
+      console.log("data updated:", json);
       setShow(false);
-      dispatchExpense({ type: "CREATE_EXPENSE", payload: json });
+      if (props.type === "income") {
+        dispatchIncome({ type: "SET_INCOME", payload: json });
+      } else if (props.type === "expense") {
+        dispatchExpense({ type: "SET_EXPENSE", payload: json });
+      }
     }
   };
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add {props.type}
-      </Button>
+      <i className="bi bi-pencil me-2" onClick={handleShow}></i>
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleSubmit}>
           <Modal.Header>
-            <Modal.Title className="mx-auto">Add Expense</Modal.Title>
+            <Modal.Title>Add Income</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group className="mb-3" controlId="formTitle">
               <Form.Label>Title</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Title"
+                placeholder={props.data.title}
                 onChange={(event) => setTitle(event.target.value)}
                 value={title}
               />
@@ -86,43 +77,46 @@ export default function AddForm(props) {
 
             <Form.Group className="mb-3" controlId="formAmount">
               <Form.Label>Amount</Form.Label>
-              <InputGroup>
-                <InputGroup.Text>$</InputGroup.Text>
-                <Form.Control
-                  type="number"
-                  onChange={(event) => setAmount(event.target.value)}
-                  value={amount}
-                />
-              </InputGroup>
+              <Form.Control
+                type="number"
+                placeholder={props.data.amount}
+                onChange={(event) => setAmount(event.target.value)}
+                value={amount}
+              />
               {error && (
                 <Form.Text className="text-danger" variant="primary">
                   {error}
                 </Form.Text>
               )}
             </Form.Group>
-            <Form.Group className="mb-3">
+
+            <Form.Group className="mb-3" controlId="formCategory">
               <Form.Label>Category</Form.Label>
-              <Form.Select
-                defaultValue="Misc"
+              <Form.Control
+                type="text"
+                placeholder={props.data.category}
                 onChange={(event) => setCategory(event.target.value)}
-              >
-                <option value="Utility">Utility</option>
-                <option value="Groceries">Groceries</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Insurance">Insurance</option>
-                <option value="Rent/Mortgage">Rent/Mortgage</option>
-                <option value="Food/Restaurant">Food/Restaurant</option>
-                <option value="Misc">Misc</option>
-              </Form.Select>
+                value={category}
+              />
+              {error && (
+                <Form.Text className="text-danger" variant="primary">
+                  {error}
+                </Form.Text>
+              )}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDate">
               <Form.Label>Date</Form.Label>
               <Form.Control
                 type="date"
-                placeholder="Enter Date"
+                placeholder={props.data.date}
                 onChange={(event) => setDate(event.target.value)}
                 value={date}
               />
+              {error && (
+                <Form.Text className="text-danger" variant="primary">
+                  {error}
+                </Form.Text>
+              )}
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
@@ -137,4 +131,6 @@ export default function AddForm(props) {
       </Modal>
     </>
   );
-}
+};
+
+export default UpdateTable;

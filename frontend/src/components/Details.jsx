@@ -1,4 +1,5 @@
 import { useIncomeContext } from "../hooks/useIncomeContext";
+import UpdateTable from "./UpdateTable";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 import Table from "react-bootstrap/Table";
@@ -15,7 +16,7 @@ export default function Details(props) {
     const response = await fetch("api/income/" + id, {
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`,
       },
     });
     const json = await response.json();
@@ -45,14 +46,7 @@ export default function Details(props) {
                 <td>{income.category}</td>
                 <td>{new Date(income.date).toLocaleDateString()}</td>
                 <td className="ps-0">
-                  <i
-                    className="bi bi-pencil me-2"
-                    onClick={() =>
-                      console.log(
-                        new Date(income.date).toLocaleDateString("en-CA")
-                      )
-                    }
-                  ></i>
+                  <UpdateTable type="income" data={income} />
                   <i
                     className="bi bi-trash"
                     onClick={() => handleClick(income._id)}
