@@ -79,8 +79,12 @@ export default function Income() {
           </Card>
         </Col>
       </Row>
-      <Row className="my-4">
-        <Col className="d-lg-flex flex-lg-column justify-content-lg-between">
+      <Row className="my-4 card-height">
+        <Col
+          lg={6}
+          xxl={2}
+          className="d-lg-flex flex-lg-column justify-content-lg-between"
+        >
           <Card>
             <Card.Body>
               <Card.Subtitle>This Month's Average</Card.Subtitle>
@@ -130,7 +134,7 @@ export default function Income() {
             </Card.Body>
           </Card>
         </Col>
-        <Col xl={5}>
+        <Col xl={6} xxl={5}>
           <Card className="h-100">
             <Card.Body>
               <Card.Title>Data Table</Card.Title>
@@ -138,7 +142,7 @@ export default function Income() {
             </Card.Body>
           </Card>
         </Col>
-        <Col xl={5}>
+        <Col xxl={5}>
           <Card className="h-100">
             <Card.Body>
               <Card.Title>Circle Graph</Card.Title>

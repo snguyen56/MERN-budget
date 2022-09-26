@@ -143,11 +143,14 @@ export default function Dashboard() {
                     variant={progressBarColor(500, 1000)}
                   />
                 </Card.Body>
-                <Card.Footer className="text-end">
-                  <Button variant="link" as={Link} to="/budgets">
-                    See all budgets
-                  </Button>
-                </Card.Footer>
+                <Button
+                  className="text-end pb-3 pe-4"
+                  variant="link"
+                  as={Link}
+                  to="/budgets"
+                >
+                  See all budgets
+                </Button>
               </Card>
             </Col>
           </Row>
@@ -189,7 +192,9 @@ export default function Dashboard() {
             </Card.Body>
             <Card.Footer className="text-end">
               <IncomeForm />
-              <Button variant="link">See more income</Button>
+              <Button variant="link" as={Link} to="/income">
+                See more income
+              </Button>
             </Card.Footer>
           </Card>
         </Col>
@@ -201,7 +206,9 @@ export default function Dashboard() {
             </Card.Body>
             <Card.Footer className="text-end">
               <AddForm type="expense" />
-              <Button variant="link">See more expenses</Button>
+              <Button variant="link" as={Link} to="/expenses">
+                See more expenses
+              </Button>
             </Card.Footer>
           </Card>
         </Col>
