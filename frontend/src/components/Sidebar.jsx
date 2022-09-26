@@ -1,7 +1,6 @@
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import useLogout from "../hooks/useLogout";
-import Stack from "react-bootstrap/Stack";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 

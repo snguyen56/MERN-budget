@@ -29,7 +29,7 @@ export default function Expenses() {
     if (user) {
       fetchData();
     }
-  }, []);
+  }, [user]);
   return (
     <Container fluid>
       <Row className="my-4">
@@ -45,17 +45,17 @@ export default function Expenses() {
         </Col>
         <Col>
           <Card style={{ height: "45vh" }}>
-            <Card.Body>
-              <Card.Title>Highest Spending</Card.Title>
-              <Card.Text>
-                <Container>
+            <Container>
+              <Card.Body>
+                <Card.Title>Highest Spending</Card.Title>
+                <Card.Text>
                   <ProgressBar
                     className="mt-4 mb-5 mx-auto w-75"
                     now={800}
                     max={1000}
                     variant="danger"
                   />
-                  <div className="d-flex justify-content-around">
+                  <div className="d-flex justify-content-around mx-5">
                     <div className="w-50">
                       {spending?.map((item) => (
                         <p className="text-start " key={item._id}>
@@ -74,9 +74,9 @@ export default function Expenses() {
                       ))}
                     </div>
                   </div>
-                </Container>
-              </Card.Text>
-            </Card.Body>
+                </Card.Text>
+              </Card.Body>
+            </Container>
           </Card>
         </Col>
       </Row>

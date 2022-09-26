@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import EditBudget from "../components/EditBudget";
+import { currencyFormatter, progressBarColor } from "../components/Formatter";
 
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
@@ -23,7 +24,6 @@ export default function Budgets() {
         },
       });
       const data = await budgetsResponse.json();
-      console.log(data);
       if (budgetsResponse.ok) {
         // setBudgetAmount(data);
         const renamedData = data.map(({ _id, ...e }) => ({ ...e, name: _id }));
@@ -37,7 +37,7 @@ export default function Budgets() {
     if (user) {
       fetchData();
     }
-  }, [setBudgetAmount]);
+  }, [setBudgetAmount, user]);
 
   return (
     <Container fluid className="mt-4">
@@ -54,23 +54,20 @@ export default function Budgets() {
                 <Card.Body>
                   <Card.Title className="d-flex justify-content-between">
                     <div>{budget.name}</div>
-                    {Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                      minimumFractionDigits: 2,
-                    }).format(budget.total ? budget.total : 0)}{" "}
-                    /{" "}
-                    {Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                      minimumFractionDigits: 2,
-                    }).format(budget.budget)}
+                    {currencyFormatter.format(
+                      budget.total ? budget.total : 0
+                    )}{" "}
+                    / {currencyFormatter.format(budget.budget)}
                   </Card.Title>
                   <Card.Text className="text-end">
                     <ProgressBar
                       className="my-2"
                       now={budget.total ? budget.total : 0}
-                      max={100}
+                      max={budget.budget}
+                      variant={progressBarColor(
+                        budget.total ? budget.total : 0,
+                        budget.budget
+                      )}
                     />
                     <EditBudget data={budget} />
                   </Card.Text>

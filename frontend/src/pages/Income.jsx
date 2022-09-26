@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useProfitContext } from "../hooks/useProfitContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { currencyFormatter, percentFormatter } from "../components/Formatter";
+import { useIncomeContext } from "../hooks/useIncomeContext";
 
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
@@ -12,6 +14,7 @@ import LineChart from "../components/LineChart";
 import Details from "../components/Details";
 
 export default function Income() {
+  const { incomes, dispatchIncome } = useIncomeContext();
   const { state } = useProfitContext();
   const { user } = useAuthContext();
 
@@ -29,7 +32,7 @@ export default function Income() {
       const data = await budgetsResponse.json();
       if (budgetsResponse.ok) {
         setIncome(data);
-        console.log(data);
+        // console.log(data);
       }
 
       //Grab last month's data
@@ -46,7 +49,7 @@ export default function Income() {
     if (user) {
       fetchData();
     }
-  }, []);
+  }, [user]);
 
   return (
     <Container fluid>
@@ -64,15 +67,11 @@ export default function Income() {
         <Col>
           <Card style={{ height: "45vh" }}>
             <Card.Body>
-              <Card.Title>Income Sources</Card.Title>
+              <Card.Title>Highest Income Sources</Card.Title>
               <Card.Text className="mt-4">
                 {income?.map((item) => (
                   <p className="text-center " key={item._id}>
-                    {item._id}{" "}
-                    {Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    }).format(item.total)}
+                    {item._id} {currencyFormatter.format(item.total)}
                   </p>
                 ))}
               </Card.Text>
@@ -82,43 +81,65 @@ export default function Income() {
       </Row>
       <Row className="my-4">
         <Col className="d-lg-flex flex-lg-column justify-content-lg-between">
-          <Card style={{ height: "100px" }}>
+          <Card>
             <Card.Body>
-              <Card.Title>Last Month's Income</Card.Title>
+              <Card.Subtitle>This Month's Average</Card.Subtitle>
+              <Card.Title className="my-1">
+                {currencyFormatter.format(state.income)}
+              </Card.Title>
               <Card.Text>
-                {Intl.NumberFormat("en-US", {
-                  style: "percent",
-                  minimumFractionDigits: 2,
-                }).format(lastMonth / state.income - 1)}
+                {percentFormatter.format(lastMonth / state.income - 1)} from
+                last month
               </Card.Text>
             </Card.Body>
           </Card>
-          <Card style={{ height: "100px" }}>
+          <Card>
             <Card.Body>
-              <Card.Title>Placeholder</Card.Title>
+              <Card.Subtitle>Last Month's Average</Card.Subtitle>
+              <Card.Title className="my-1">
+                {currencyFormatter.format(state.income)}
+              </Card.Title>
+              <Card.Text>
+                {percentFormatter.format(lastMonth / state.income - 1)} from
+                monthly avg
+              </Card.Text>
             </Card.Body>
           </Card>
-          <Card style={{ height: "100px" }}>
+          <Card>
             <Card.Body>
-              <Card.Title>Placeholder</Card.Title>
+              <Card.Subtitle>This Year's Total</Card.Subtitle>
+              <Card.Title className="my-1">
+                {currencyFormatter.format(state.income)}
+              </Card.Title>
+              <Card.Text>
+                {percentFormatter.format(lastMonth / state.income - 1)} from
+                last year
+              </Card.Text>
             </Card.Body>
           </Card>
-          <Card style={{ height: "100px" }}>
+          <Card>
             <Card.Body>
-              <Card.Title>Placeholder</Card.Title>
+              <Card.Subtitle>This Month's Savings</Card.Subtitle>
+              <Card.Title className="my-1">
+                {currencyFormatter.format(state.income)}
+              </Card.Title>
+              <Card.Text>
+                {percentFormatter.format(lastMonth / state.income - 1)} from
+                last month
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
         <Col xl={5}>
-          <Card style={{ height: "47vh" }}>
+          <Card className="h-100">
             <Card.Body>
               <Card.Title>Data Table</Card.Title>
-              <Details />
+              <Details incomes={incomes} />
             </Card.Body>
           </Card>
         </Col>
         <Col xl={5}>
-          <Card style={{ height: "47vh" }}>
+          <Card className="h-100">
             <Card.Body>
               <Card.Title>Circle Graph</Card.Title>
               <div style={{ height: "90%" }}>

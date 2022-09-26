@@ -28,8 +28,6 @@ export default function DoughnutChart({ info }) {
       {
         label: "Income",
         data: [...categoryAmounts],
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-        borderColor: "rgba(53, 162, 235, 0.5)",
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
