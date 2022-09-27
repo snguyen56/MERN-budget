@@ -58,7 +58,10 @@ const addTask = async (req, res) => {
 const deleteTask = async (req, res) => {
   const user = await User.findById(req.user._id);
   try {
-    user.tasks = user.tasks.filter((task) => req.body.includes(task._id));
+    // output = user.tasks.filter((task) => !req.body.includes(task._id));
+    req.body.forEach((element) => {
+      user.tasks.pull(element);
+    });
     user.save();
     res.status(200).json(user.tasks);
   } catch (error) {

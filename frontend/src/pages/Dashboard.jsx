@@ -160,7 +160,7 @@ export default function Dashboard() {
         <Col>
           <Card className="h-100">
             <Card.Body>
-              <Card.Title>Goals</Card.Title>
+              <Card.Title>To Do</Card.Title>
               <ul className="d-flex flex-column mt-3 px-1 text-start">
                 {user.user.tasks.map((task, index) => (
                   <li>

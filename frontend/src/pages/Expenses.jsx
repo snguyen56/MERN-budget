@@ -47,7 +47,7 @@ export default function Expenses() {
           <Card style={{ height: "45vh" }}>
             <Container>
               <Card.Body>
-                <Card.Title>Highest Spending</Card.Title>
+                <Card.Title>Highest Spending Categories</Card.Title>
                 <Card.Text>
                   <ProgressBar
                     className="mt-4 mb-5 mx-auto w-75"
@@ -114,7 +114,7 @@ export default function Expenses() {
         <Col xl={5}>
           <Card style={{ height: "47vh" }}>
             <Card.Body>
-              <Card.Title>Spending By Categories</Card.Title>
+              <Card.Title>Spending Breakdown</Card.Title>
               <Card.Text className="mt-3 h-100">
                 <div style={{ height: "90%" }}>
                   {spending && <DoughnutChart info={spending} />}

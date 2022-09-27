@@ -145,10 +145,12 @@ export default function Income() {
         <Col xxl={5}>
           <Card className="h-100">
             <Card.Body>
-              <Card.Title>Circle Graph</Card.Title>
-              <div style={{ height: "90%" }}>
-                {income && <DoughnutChart info={income} />}
-              </div>
+              <Card.Title>Income Breakdown</Card.Title>
+              <Card.Text className="mt-3 h-100">
+                <div style={{ height: "90%" }}>
+                  {income && <DoughnutChart info={income} />}
+                </div>
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
