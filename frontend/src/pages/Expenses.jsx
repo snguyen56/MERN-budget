@@ -8,17 +8,25 @@ import DoughnutChart from "../components/DoughnutChart";
 import LineChart from "../components/LineChart";
 import Details from "../components/ExpenseDetails";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import Pagination from "../components/Pagination";
 
 export default function Expenses() {
+  const { expenses, dispatchExpense } = useExpenseContext();
+
   const { user } = useAuthContext();
   const [spending, setSpending] = useState(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [expensePerPage] = useState(9);
+
   useEffect(() => {
     const fetchData = async () => {
       //Grab budgets data
       const budgetsResponse = await fetch("/api/expense/category", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const data = await budgetsResponse.json();
@@ -30,6 +38,15 @@ export default function Expenses() {
       fetchData();
     }
   }, [user]);
+
+  //Get Current Posts
+  const indexOfLastIncome = currentPage * expensePerPage;
+  const indexOfFirstIncome = indexOfLastIncome - expensePerPage;
+  const currentExpense = expenses.slice(indexOfFirstIncome, indexOfLastIncome);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <Container fluid>
       <Row className="my-4">
@@ -107,7 +124,12 @@ export default function Expenses() {
           <Card style={{ height: "47vh" }}>
             <Card.Body>
               <Card.Title>Data Table</Card.Title>
-              <Details />
+              <Details expenses={currentExpense} />
+              <Pagination
+                dataPerPage={expensePerPage}
+                totalPosts={expenses.length}
+                paginate={paginate}
+              />
             </Card.Body>
           </Card>
         </Col>
