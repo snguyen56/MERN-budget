@@ -12,7 +12,7 @@ import Card from "react-bootstrap/Card";
 import DoughnutChart from "../components/DoughnutChart";
 import LineChart from "../components/LineChart";
 import Details from "../components/Details";
-import Pagination from "../components/Pagination";
+import PaginateTable from "../components/PaginateTable";
 
 export default function Income() {
   const { incomes, dispatchIncome } = useIncomeContext();
@@ -151,9 +151,10 @@ export default function Income() {
             <Card.Body>
               <Card.Title>Data Table</Card.Title>
               <Details incomes={currentIncome} />
-              <Pagination
+              <PaginateTable
                 dataPerPage={incomePerPage}
                 totalPosts={incomes.length}
+                currentPage={currentPage}
                 paginate={paginate}
               />
             </Card.Body>

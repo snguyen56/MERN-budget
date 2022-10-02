@@ -1,5 +1,5 @@
 import { useExpenseContext } from "../hooks/useExpenseContext";
-import UpdateTable from "./UpdateTable";
+import EditButton from "./EditButton";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 import Table from "react-bootstrap/Table";
@@ -42,7 +42,7 @@ export default function Details(props) {
                 <td>{expense.category}</td>
                 <td>{new Date(expense.date).toLocaleDateString()}</td>
                 <td className="ps-0">
-                  <UpdateTable type="expense" data={expense} />
+                  <EditButton type="expense" data={expense} />
                   <i
                     className="bi bi-trash"
                     onClick={() => handleClick(expense._id)}

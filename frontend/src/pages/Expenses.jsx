@@ -10,7 +10,7 @@ import Details from "../components/ExpenseDetails";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import Pagination from "../components/Pagination";
+import PaginateTable from "../components/PaginateTable";
 
 export default function Expenses() {
   const { expenses, dispatchExpense } = useExpenseContext();
@@ -125,9 +125,10 @@ export default function Expenses() {
             <Card.Body>
               <Card.Title>Data Table</Card.Title>
               <Details expenses={currentExpense} />
-              <Pagination
+              <PaginateTable
                 dataPerPage={expensePerPage}
                 totalPosts={expenses.length}
+                currentPage={currentPage}
                 paginate={paginate}
               />
             </Card.Body>

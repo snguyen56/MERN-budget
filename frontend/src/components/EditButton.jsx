@@ -1,5 +1,6 @@
 import { useIncomeContext } from "../hooks/useIncomeContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -7,9 +8,10 @@ import Modal from "react-bootstrap/Modal";
 
 const { useState } = require("react");
 
-const UpdateTable = (props) => {
+const EditButton = (props) => {
   const { dispatchIncome } = useIncomeContext();
   const { dispatchExpense } = useExpenseContext();
+  const { user } = useAuthContext();
 
   const [title, setTitle] = useState(props.data.title);
   const [amount, setAmount] = useState(props.data.amount);
@@ -35,10 +37,15 @@ const UpdateTable = (props) => {
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`,
       },
     });
 
-    const response2 = await fetch("api/" + props.type + "/");
+    const response2 = await fetch("api/" + props.type + "/", {
+      headers: {
+        "Authorization": `Bearer ${user.token}`,
+      },
+    });
 
     const json = await response2.json();
 
@@ -133,4 +140,4 @@ const UpdateTable = (props) => {
   );
 };
 
-export default UpdateTable;
+export default EditButton;
