@@ -219,7 +219,7 @@ export default function Dashboard() {
           <Card className="h-100">
             <Card.Body className="pt-2">
               <Card.Title>Most Recent Expenses</Card.Title>
-              <ExpenseDetails expenses={expenses} />
+              <ExpenseDetails expenses={expenses?.slice(0, 6)} />
             </Card.Body>
             <Card.Footer className="text-end">
               <AddForm type="expense" />

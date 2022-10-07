@@ -12,6 +12,7 @@ import Card from "react-bootstrap/Card";
 import DoughnutChart from "../components/DoughnutChart";
 import LineChart from "../components/LineChart";
 import Details from "../components/Details";
+import PaginateTable from "../components/PaginateTable";
 
 export default function Income() {
   const { incomes, dispatchIncome } = useIncomeContext();
@@ -21,12 +22,15 @@ export default function Income() {
   const [lastMonth, setLastMonth] = useState(null);
   const [income, setIncome] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [incomePerPage] = useState(9);
+
   useEffect(() => {
     const fetchData = async () => {
       //Grab budgets data
       const budgetsResponse = await fetch("/api/income/category", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const data = await budgetsResponse.json();
@@ -38,7 +42,7 @@ export default function Income() {
       //Grab last month's data
       const monthResponse = await fetch("/api/month", {
         headers: {
-          "Authorization": `Bearer ${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       });
       const monthData = await monthResponse.json();
@@ -50,6 +54,14 @@ export default function Income() {
       fetchData();
     }
   }, [user]);
+
+  //Get Current Posts
+  const indexOfLastIncome = currentPage * incomePerPage;
+  const indexOfFirstIncome = indexOfLastIncome - incomePerPage;
+  const currentIncome = incomes.slice(indexOfFirstIncome, indexOfLastIncome);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <Container fluid>
@@ -138,7 +150,13 @@ export default function Income() {
           <Card className="h-100">
             <Card.Body>
               <Card.Title>Income</Card.Title>
-              <Details incomes={incomes} />
+              <Details incomes={currentIncome} />
+              <PaginateTable
+                dataPerPage={incomePerPage}
+                totalPosts={incomes.length}
+                currentPage={currentPage}
+                paginate={paginate}
+              />
             </Card.Body>
           </Card>
         </Col>
