@@ -57,7 +57,7 @@ export default function Income() {
         <Col xl={8}>
           <Card style={{ height: "45vh" }}>
             <Card.Body>
-              <Card.Title>Time Graph</Card.Title>
+              <Card.Title>Yearly Income</Card.Title>
               <div style={{ height: "90%" }}>
                 <LineChart />
               </div>
@@ -137,7 +137,7 @@ export default function Income() {
         <Col xl={6} xxl={5}>
           <Card className="h-100">
             <Card.Body>
-              <Card.Title>Data Table</Card.Title>
+              <Card.Title>Income</Card.Title>
               <Details incomes={incomes} />
             </Card.Body>
           </Card>

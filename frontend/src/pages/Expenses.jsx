@@ -36,7 +36,7 @@ export default function Expenses() {
         <Col xl={8}>
           <Card style={{ height: "45vh" }}>
             <Card.Body>
-              <Card.Title>Time Graph</Card.Title>
+              <Card.Title>Yearly Expense</Card.Title>
               <div style={{ height: "90%" }}>
                 <LineChart />
               </div>
@@ -106,7 +106,7 @@ export default function Expenses() {
         <Col xl={5}>
           <Card style={{ height: "47vh" }}>
             <Card.Body>
-              <Card.Title>Data Table</Card.Title>
+              <Card.Title>Expenses</Card.Title>
               <Details />
             </Card.Body>
           </Card>

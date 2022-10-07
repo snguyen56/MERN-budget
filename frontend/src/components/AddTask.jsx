@@ -7,7 +7,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 
 import { useAuthContext } from "../hooks/useAuthContext";
 
-export default function AddTask() {
+export default function AddTask({ addTaskItem }) {
   const { user } = useAuthContext();
 
   const [show, setShow] = useState(false);
@@ -20,9 +20,39 @@ export default function AddTask() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
+
+    // const data = { name, _id: "asdfasfwefsafg123143" };
+    // addTaskItem(data);
+    // console.log(JSON.stringify(data));
+    // setName("");
+    // setShow(false);
+
     const data = { name };
 
-    console.log(JSON.stringify(data));
+    const response = await fetch("/api/user/task", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      setError(json.error);
+      console.log(error);
+    } else if (response.ok) {
+      setName("");
+      setError(null);
+      console.log("new task added:", json);
+      setShow(false);
+      addTaskItem(data);
+    }
   };
   return (
     <>

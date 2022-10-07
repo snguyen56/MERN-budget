@@ -1,12 +1,33 @@
+import { useAuthContext } from "../hooks/useAuthContext";
 import Button from "react-bootstrap/Button";
 
 export default function DeleteTask(props) {
+  const { user } = useAuthContext();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = props.data;
+    if (!user) {
+      return;
+    }
 
-    console.log(JSON.stringify(data));
+    const data = props.data;
+    // props.deleteTasks(data);
+    // console.log("removing tasks: ", JSON.stringify(data));
+
+    const response = await fetch("api/user/task", {
+      method: "DELETE",
+      body: JSON.stringify(props.data),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+
+    if (response.ok) {
+      props.deleteTasks(data);
+    }
   };
   return <Button onClick={handleSubmit}>Delete Task</Button>;
 }

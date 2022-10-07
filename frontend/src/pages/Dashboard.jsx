@@ -32,6 +32,8 @@ export default function Dashboard() {
   const { user } = useAuthContext();
 
   const [deleteList, setDeleteList] = useState([]);
+  const [taskList, setTaskList] = useState(user.user.tasks);
+  // console.log("Task State: ", taskList);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,7 +82,7 @@ export default function Dashboard() {
       if (expenseSumResponse.ok) {
         setExpense(expenseSumData[0].total);
       }
-      // console.log("gross profit: ", state.profit);
+      console.log("gross profit: ", state.expense);
     };
     if (user) {
       fetchData();
@@ -96,6 +98,21 @@ export default function Dashboard() {
       updatedList.splice(deleteList.indexOf(event.target.value), 1);
     }
     setDeleteList(updatedList);
+  };
+
+  const addTaskItem = (task) => {
+    setTaskList((taskList) => [...taskList, task]);
+    user.user.tasks = [...user.user.tasks, task];
+    // console.log(user.user.tasks);
+  };
+
+  const deleteTasks = (tasks) => {
+    setTaskList((taskList) =>
+      taskList.filter((task) => !tasks.includes(task._id))
+    );
+    user.user.tasks = user.user.tasks.filter(
+      (task) => !tasks.includes(task._id)
+    );
   };
 
   return (
@@ -162,8 +179,8 @@ export default function Dashboard() {
             <Card.Body>
               <Card.Title>To Do</Card.Title>
               <ul className="d-flex flex-column mt-3 px-1 text-start">
-                {user.user.tasks.map((task, index) => (
-                  <li>
+                {taskList.map((task, index) => (
+                  <li key={task._id}>
                     <input
                       key={task._id}
                       type="checkbox"
@@ -178,8 +195,8 @@ export default function Dashboard() {
             </Card.Body>
             <Card.Footer className="text-end">
               <ButtonGroup>
-                <AddTask />
-                <DeleteTask data={deleteList} />
+                <AddTask addTaskItem={addTaskItem} />
+                <DeleteTask data={deleteList} deleteTasks={deleteTasks} />
               </ButtonGroup>
             </Card.Footer>
           </Card>
