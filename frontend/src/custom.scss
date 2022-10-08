@@ -1,3 +1,4 @@
+// overide defaults
 $body-bg: #37404a;
 $body-color: #aab8c5;
 $card-bg: #444e5a;
@@ -11,5 +12,24 @@ $nav-link-color: #aab8c5;
 $nav-link-hover-color: white;
 $form-select-indicator-color: #aab8c5;
 $input-group-addon-bg: #37404a;
+$pagination-color: #aab8c5;
+$pagination-bg: #37404a;
+$pagination-border-color: #515c69;
+$pagination-active-border-color: #515c69;
+$pagination-hover-border-color: #515c69;
+$pagination-hover-bg: #444e5a;
 
+// import the functions & variables
+@import "../node_modules/bootstrap/scss/_functions";
+@import "../node_modules/bootstrap/scss/_variables";
+
+// custom theme colours
+$custom-theme-colors: (
+  "caution": $orange,
+);
+
+// merge the maps to add new theme colors
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+
+// import bootstrap
 @import "../node_modules/bootstrap/scss/bootstrap";

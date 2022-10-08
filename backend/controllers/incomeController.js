@@ -1,6 +1,7 @@
 const Income = require("../models/incomeModel");
 const mongoose = require("mongoose");
 
+// get a single income
 const getIncome = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -13,12 +14,14 @@ const getIncome = async (req, res) => {
   res.status(200).json(income);
 };
 
+// get all incomes
 const getIncomes = async (req, res) => {
   const user_id = req.user._id;
   const incomes = await Income.find({ user_id }).lean().sort({ date: -1 });
   res.status(200).json(incomes);
 };
 
+// get sum of all incomes
 const getIncomeSum = async (req, res) => {
   const user_id = req.user._id;
   const incomes = await Income.aggregate([
@@ -42,6 +45,7 @@ const getIncomeSum = async (req, res) => {
   res.status(200).json(incomes);
 };
 
+// get sum of all incomes for the current month
 const getMonthlyIncomeSum = async (req, res) => {
   const user_id = req.user._id;
   var date = new Date();
@@ -76,6 +80,7 @@ const getMonthlyIncomeSum = async (req, res) => {
   res.status(200).json(incomes);
 };
 
+// get all incomes for the current month
 const getMonthlyIncomes = async (req, res) => {
   const user_id = req.user._id;
   var date = new Date();
@@ -97,6 +102,7 @@ const getMonthlyIncomes = async (req, res) => {
   // res.status(200).json(incomes);
 };
 
+// get all incomes split by category
 const getIncomeCategory = async (req, res) => {
   const user_id = req.user._id;
   const income = await Income.aggregate([
@@ -120,6 +126,7 @@ const getIncomeCategory = async (req, res) => {
   res.status(200).json(income);
 };
 
+// create income
 const createIncome = async (req, res) => {
   const { title, amount, category, date } = req.body;
 
@@ -138,6 +145,7 @@ const createIncome = async (req, res) => {
   }
 };
 
+// delete income
 const deleteIncome = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -150,6 +158,7 @@ const deleteIncome = async (req, res) => {
   res.status(200).json(income);
 };
 
+// update income
 const updateIncome = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {

@@ -6,6 +6,7 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
 };
 
+// attempt to login, create token if successful
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -19,6 +20,7 @@ const loginUser = async (req, res) => {
   }
 };
 
+// create new user
 const signupUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -33,6 +35,7 @@ const signupUser = async (req, res) => {
   }
 };
 
+// update budget value
 const updateBudget = async (req, res) => {
   const user = await User.findById(req.user._id);
   try {
@@ -44,6 +47,7 @@ const updateBudget = async (req, res) => {
   }
 };
 
+// add task to TO DO list
 const addTask = async (req, res) => {
   const user = await User.findById(req.user._id);
   try {
@@ -55,6 +59,7 @@ const addTask = async (req, res) => {
   }
 };
 
+// remove 1 or more tasks from document
 const deleteTask = async (req, res) => {
   const user = await User.findById(req.user._id);
   try {

@@ -82,9 +82,10 @@ export default function Income() {
             <Card.Body>
               <Card.Title>Highest Income Sources</Card.Title>
               <Card.Text className="mt-4">
-                {income?.map((item) => (
+                {income?.map((item, index) => (
                   <p className="text-center " key={item._id}>
-                    {item._id} {currencyFormatter.format(item.total)}
+                    {index + 1}. {item._id}{" "}
+                    {currencyFormatter.format(item.total)}
                   </p>
                 ))}
               </Card.Text>
@@ -100,20 +101,24 @@ export default function Income() {
         >
           <Card>
             <Card.Body>
-              <Card.Subtitle>This Month's Average</Card.Subtitle>
+              <Card.Subtitle>This Month's Income</Card.Subtitle>
               <Card.Title className="my-1">
                 {currencyFormatter.format(state.income)}
               </Card.Title>
               <Card.Text>
-                <span
-                  className={
-                    percentFormatter.format(lastMonth / state.income - 1) >= 0
-                      ? "text-success"
-                      : "text-danger"
-                  }
-                >
-                  {percentFormatter.format(lastMonth / state.income - 1)}
-                </span>{" "}
+                {lastMonth === null ? (
+                  <span
+                    className={
+                      percentFormatter.format(state.income / lastMonth - 1) >= 0
+                        ? "text-success"
+                        : "text-danger"
+                    }
+                  >
+                    {percentFormatter.format(state.income / lastMonth - 1)}
+                  </span>
+                ) : (
+                  "No data"
+                )}{" "}
                 from last month
               </Card.Text>
             </Card.Body>

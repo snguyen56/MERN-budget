@@ -26,16 +26,16 @@ export default function Login() {
         <Container>
           <Form onSubmit={handleSubmit}>
             <h1>Login</h1>
-            <Form.Group className="mb-3" controlId="formTitle">
+            <Form.Group className="mb-3" controlId="email">
               <Form.Label>Email:</Form.Label>
               <Form.Control
-                type="text"
+                type="email"
                 placeholder="Enter Email"
                 onChange={(event) => setEmail(event.target.value)}
                 value={email}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formTitle">
+            <Form.Group className="mb-3" controlId="password">
               <Form.Label>Password:</Form.Label>
               <Form.Control
                 type="password"

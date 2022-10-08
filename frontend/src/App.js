@@ -20,8 +20,10 @@ function App() {
       <div className="sidebar">
         <Sidebar />
       </div>
-      <div className="content">
-        <TopNav />
+
+      <div className="content w-100">
+        {user ? <TopNav /> : null}
+
         <Routes>
           <Route
             path="/"

@@ -26,7 +26,7 @@ export default function LineChart() {
         ticks: {
           color: "#aab8c5",
           font: {
-            size: 14,
+            size: 16,
           },
         },
       },

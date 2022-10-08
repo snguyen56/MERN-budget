@@ -17,7 +17,7 @@ export default function TopNav() {
 
   return (
     <Navbar
-      className="d-lg-none"
+      className="d-xxl-none"
       collapseOnSelect
       expand="false"
       bg="dark"

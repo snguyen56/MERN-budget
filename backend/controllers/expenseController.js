@@ -1,6 +1,7 @@
 const Expense = require("../models/expenseModel");
 const mongoose = require("mongoose");
 
+// get a single expense
 const getExpense = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -13,12 +14,14 @@ const getExpense = async (req, res) => {
   res.status(200).json(expense);
 };
 
+//get all expenses
 const getExpenses = async (req, res) => {
   const user_id = req.user._id;
   const expenses = await Expense.find({ user_id }).sort({ date: -1 });
   res.status(200).json(expenses);
 };
 
+// get the sum of all expenses
 const getExpenseSum = async (req, res) => {
   const user_id = req.user._id;
   const expense = await Expense.aggregate([
@@ -42,6 +45,7 @@ const getExpenseSum = async (req, res) => {
   res.status(200).json(expense);
 };
 
+// get all expenses for the current month
 const getMonthlyExpenses = async (req, res) => {
   const user_id = req.user._id;
   var date = new Date();
@@ -59,6 +63,7 @@ const getMonthlyExpenses = async (req, res) => {
   res.status(200).json(expenses);
 };
 
+//get the sum of all expenses for the current month
 const getMonthlyExpenseSum = async (req, res) => {
   const user_id = req.user._id;
   var date = new Date();
@@ -88,6 +93,8 @@ const getMonthlyExpenseSum = async (req, res) => {
   }
   res.status(200).json(expenses);
 };
+
+//get the expenses split by category
 const getExpensesCategory = async (req, res) => {
   const user_id = req.user._id;
   const expense = await Expense.aggregate([
@@ -111,6 +118,7 @@ const getExpensesCategory = async (req, res) => {
   res.status(200).json(expense);
 };
 
+// create new expense
 const createExpense = async (req, res) => {
   const { title, amount, category, date } = req.body;
   try {
@@ -128,6 +136,7 @@ const createExpense = async (req, res) => {
   }
 };
 
+// delete expense
 const deleteExpense = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -140,6 +149,7 @@ const deleteExpense = async (req, res) => {
   res.status(200).json(expense);
 };
 
+// update expense
 const updateExpense = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {

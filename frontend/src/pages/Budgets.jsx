@@ -9,12 +9,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Table from "react-bootstrap/Table";
+import Spinner from "react-bootstrap/Spinner";
 
 export default function Budgets() {
   const [budgetAmount, setBudgetAmount] = useState(null);
-  const [budget, setBudget] = useState("All Expenses Selected");
-  const [chosenExpenses, setChosenExpenses] = useState([]);
-  const [monthlyExpenses, setMonthlyExpenses] = useState([]);
+  const [budget, setBudget] = useState("No Expenses Selected");
+  const [chosenExpenses, setChosenExpenses] = useState(null);
+  const [monthlyExpenses, setMonthlyExpenses] = useState(null);
   const { user } = useAuthContext();
 
   useEffect(
@@ -53,11 +54,13 @@ export default function Budgets() {
           },
         });
         const expenseData = await expensesResponse.json();
+        console.log(expenseData);
         if (expensesResponse.ok) {
           setMonthlyExpenses(expenseData);
-          // console.log("Budget Expense List: ", chosenExpenses);
-          setChosenExpenses(monthlyExpenses);
+          setChosenExpenses(expenseData);
         }
+        // console.log("chosen Expenses: ", chosenExpenses);
+        // console.log("monthly Expenses: ", monthlyExpenses);
       };
       if (user) {
         fetchData();
@@ -66,6 +69,14 @@ export default function Budgets() {
     // eslint-disable-next-line
     [setBudgetAmount, user, setChosenExpenses, setMonthlyExpenses]
   );
+
+  // if (!chosenExpenses) {
+  //   return (
+  //     <Spinner animation="border" role="status">
+  //       <span className="visually-hidden">Loading...</span>
+  //     </Spinner>
+  //   );
+  // }
 
   return (
     <Container fluid className="mt-4">
@@ -122,9 +133,9 @@ export default function Budgets() {
                     <th>Date</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {monthlyExpenses &&
-                    chosenExpenses.map((expense, index) => (
+                {chosenExpenses && (
+                  <tbody>
+                    {chosenExpenses.map((expense, index) => (
                       <tr>
                         <td>{index}</td>
                         <td>{expense.title}</td>
@@ -133,7 +144,8 @@ export default function Budgets() {
                         <td>{new Date(expense.date).toLocaleDateString()}</td>
                       </tr>
                     ))}
-                </tbody>
+                  </tbody>
+                )}
               </Table>
             </Card.Body>
           </Card>

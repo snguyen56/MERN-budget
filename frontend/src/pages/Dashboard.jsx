@@ -4,7 +4,11 @@ import { useExpenseContext } from "../hooks/useExpenseContext";
 import { useProfitContext } from "../hooks/useProfitContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Link } from "react-router-dom";
-import { currencyFormatter, progressBarColor } from "../components/Formatter";
+import {
+  percentFormatter,
+  currencyFormatter,
+  progressBarColor,
+} from "../components/Formatter";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -127,6 +131,10 @@ export default function Dashboard() {
     }
   }, [setBudgetAmount, dispatchIncome, dispatchExpense, user]);
 
+  if (!state) {
+    return <>Loading...</>;
+  }
+
   // Add/Remove checked item from list
   const handleCheck = (event) => {
     var updatedList = [...deleteList];
@@ -169,22 +177,25 @@ export default function Dashboard() {
         <Col className="d-lg-flex flex-lg-column justify-content-lg-between">
           <Row>
             <Col sm={12} md={6}>
-              <SumCard title="Total Income" data={state.income} />
+              <SumCard title="This Month's Total Income" data={state.income} />
             </Col>
             <Col sm={12} md={6}>
-              <SumCard title="Total Expenses" data={state.expense} />
+              <SumCard
+                title="This Month's Total Expenses"
+                data={state.expense}
+              />
             </Col>
           </Row>
           <Row>
             <Col sm={12} md={6}>
-              <SumCard title="Gross Profit" data={state.profit} />
+              <SumCard title="This Month's Gross Profit" data={state.profit} />
             </Col>
             <Col sm={12} md={6}>
               {user.budgets && (
                 <Card style={{ height: "21vh" }}>
                   <Card.Body>
                     <Card.Title className="d-flex justify-content-between align-items-baseline">
-                      <div>Total Budget</div>
+                      <div>Budget</div>
                       <div>
                         <span className="fs-6">
                           {currencyFormatter.format(user.budgets.totalSpending)}
@@ -192,15 +203,21 @@ export default function Dashboard() {
                         / {currencyFormatter.format(user.budgets.totalBudget)}
                       </div>
                     </Card.Title>
-                    <ProgressBar
-                      className="mt-5"
-                      now={user.budgets.totalSpending}
-                      max={user.budgets.totalBudget}
-                      variant={progressBarColor(
-                        user.budgets.totalSpending,
-                        user.budgets.totalBudget
-                      )}
-                    />
+                    <Card.Text className="text-end">
+                      <ProgressBar
+                        className="mt-5"
+                        now={user.budgets.totalSpending}
+                        max={user.budgets.totalBudget}
+                        variant={progressBarColor(
+                          user.budgets.totalSpending,
+                          user.budgets.totalBudget
+                        )}
+                      />
+                      {percentFormatter.format(
+                        user.budgets.totalSpending / user.budgets.totalBudget
+                      )}{" "}
+                      of Budget Spent
+                    </Card.Text>
                   </Card.Body>
                   <Button
                     className="text-end pb-3 pe-4"
