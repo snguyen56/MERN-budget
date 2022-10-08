@@ -8,12 +8,12 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 export default function EditBudget({ data }) {
-  const { user } = useAuthContext();
+  const { user, dispatchAuth } = useAuthContext();
 
   const [show, setShow] = useState(false);
-  const [name, setName] = useState(data.name);
+  const [name] = useState(data.name);
   const [budget, setBudget] = useState(data.budget);
-  const [_id, setID] = useState(data._id);
+  const [_id] = useState(data._id);
   const [error, setError] = useState(null);
 
   const handleClose = () => setShow(false);
@@ -38,11 +38,11 @@ export default function EditBudget({ data }) {
       setError(json.error);
       console.log(error);
     } else if (response.ok) {
-      setName("");
       setBudget("");
       setError(null);
       setShow(false);
       console.log("budget updated: ", json);
+      dispatchAuth({ type: "EDIT_BUDGET", payload: json });
     }
   };
   return (

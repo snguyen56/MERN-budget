@@ -10,6 +10,21 @@ export const authReducer = (state, action) => {
     case "LOGOUT":
       return { user: null };
 
+    case "EDIT_BUDGET":
+      return {
+        user: {
+          ...state.user,
+          user: {
+            ...state.user.user,
+            budgets: state.user.user.budgets.map((budget) =>
+              budget._id === action.payload._id
+                ? { ...budget, budget: action.payload.budget }
+                : budget
+            ),
+          },
+        },
+      };
+
     default:
       return state;
   }

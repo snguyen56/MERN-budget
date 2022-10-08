@@ -19,7 +19,7 @@ export default function Expenses() {
   const [spending, setSpending] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [expensePerPage] = useState(9);
+  const [expensePerPage] = useState(6);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,13 +125,15 @@ export default function Expenses() {
             <Card.Body>
               <Card.Title>Expenses</Card.Title>
               <Details expenses={currentExpense} />
+            </Card.Body>
+            <Card.Footer className="d-flex justify-content-end">
               <PaginateTable
                 dataPerPage={expensePerPage}
                 totalPosts={expenses.length}
                 currentPage={currentPage}
                 paginate={paginate}
               />
-            </Card.Body>
+            </Card.Footer>
           </Card>
         </Col>
         <Col xl={5}>

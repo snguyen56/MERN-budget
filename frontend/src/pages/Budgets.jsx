@@ -12,32 +12,54 @@ import Table from "react-bootstrap/Table";
 
 export default function Budgets() {
   const [budgetAmount, setBudgetAmount] = useState(null);
-  const [budget, setBudget] = useState("No Expenses Selected");
+  const [budget, setBudget] = useState("All Expenses Selected");
+  const [chosenExpenses, setChosenExpenses] = useState([]);
+  const [monthlyExpenses, setMonthlyExpenses] = useState([]);
   const { user } = useAuthContext();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      //Grab budgets data
-      const budgetsResponse = await fetch("/api/expense/category", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      const data = await budgetsResponse.json();
-      if (budgetsResponse.ok) {
-        // setBudgetAmount(data);
-        const renamedData = data.map(({ _id, ...e }) => ({ ...e, name: _id }));
-        const newData = user.user.budgets.map((item) => ({
-          ...item,
-          ...renamedData.find((budget) => item.name === budget.name),
-        }));
-        setBudgetAmount(newData);
+  useEffect(
+    () => {
+      const fetchData = async () => {
+        //Grab budgets data
+        const budgetsResponse = await fetch("/api/expense/category", {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+        const data = await budgetsResponse.json();
+        if (budgetsResponse.ok) {
+          // setBudgetAmount(data);
+          const renamedData = data.map(({ _id, ...e }) => ({
+            ...e,
+            name: _id,
+          }));
+          const newData = user.user.budgets.map((item) => ({
+            ...item,
+            ...renamedData.find((budget) => item.name === budget.name),
+          }));
+          setBudgetAmount(newData);
+        }
+
+        //Grab expense data
+        const expensesResponse = await fetch("/api/expense/month", {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+        const expenseData = await expensesResponse.json();
+        if (expensesResponse.ok) {
+          setMonthlyExpenses(expenseData);
+          console.log("Budget Expense List: ", chosenExpenses);
+          setChosenExpenses(monthlyExpenses);
+        }
+      };
+      if (user) {
+        fetchData();
       }
-    };
-    if (user) {
-      fetchData();
-    }
-  }, [setBudgetAmount, user]);
+    },
+    // eslint-disable-next-line
+    [setBudgetAmount, user, setChosenExpenses, setMonthlyExpenses]
+  );
 
   return (
     <Container fluid className="mt-4">
@@ -49,6 +71,11 @@ export default function Budgets() {
                 key={budget.name}
                 onClick={() => {
                   setBudget(budget.name + " Expenses");
+                  setChosenExpenses(
+                    monthlyExpenses.filter(
+                      (expense) => expense.category === budget.name
+                    )
+                  );
                 }}
               >
                 <Card.Body>
@@ -90,23 +117,16 @@ export default function Budgets() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td colSpan={2}>Larry the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
+                  {monthlyExpenses &&
+                    chosenExpenses.map((expense, index) => (
+                      <tr>
+                        <td>{index}</td>
+                        <td>{expense.title}</td>
+                        <td>{expense.amount}</td>
+                        <td>{expense.category}</td>
+                        <td>{new Date(expense.date).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </Table>
             </Card.Body>

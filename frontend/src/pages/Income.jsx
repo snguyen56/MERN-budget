@@ -19,11 +19,11 @@ export default function Income() {
   const { state } = useProfitContext();
   const { user } = useAuthContext();
 
-  const [lastMonth, setLastMonth] = useState(null);
+  const [lastMonth, setLastMonth] = useState(0);
   const [income, setIncome] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [incomePerPage] = useState(9);
+  const [incomePerPage] = useState(6);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +48,7 @@ export default function Income() {
       const monthData = await monthResponse.json();
       if (monthResponse.ok && monthData[0]) {
         setLastMonth(monthData[0].total_income);
+        console.log("last month", lastMonth);
       }
     };
     if (user) {
@@ -104,8 +105,16 @@ export default function Income() {
                 {currencyFormatter.format(state.income)}
               </Card.Title>
               <Card.Text>
-                {percentFormatter.format(lastMonth / state.income - 1)} from
-                last month
+                <span
+                  className={
+                    percentFormatter.format(lastMonth / state.income - 1) >= 0
+                      ? "text-success"
+                      : "text-danger"
+                  }
+                >
+                  {percentFormatter.format(lastMonth / state.income - 1)}
+                </span>{" "}
+                from last month
               </Card.Text>
             </Card.Body>
           </Card>
@@ -151,13 +160,15 @@ export default function Income() {
             <Card.Body>
               <Card.Title>Income</Card.Title>
               <Details incomes={currentIncome} />
+            </Card.Body>
+            <Card.Footer className="d-flex justify-content-end">
               <PaginateTable
                 dataPerPage={incomePerPage}
                 totalPosts={incomes.length}
                 currentPage={currentPage}
                 paginate={paginate}
               />
-            </Card.Body>
+            </Card.Footer>
           </Card>
         </Col>
         <Col xxl={5}>

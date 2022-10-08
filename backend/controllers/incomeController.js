@@ -15,7 +15,7 @@ const getIncome = async (req, res) => {
 
 const getIncomes = async (req, res) => {
   const user_id = req.user._id;
-  const incomes = await Income.find({ user_id }).sort({ date: -1 });
+  const incomes = await Income.find({ user_id }).lean().sort({ date: -1 });
   res.status(200).json(incomes);
 };
 
