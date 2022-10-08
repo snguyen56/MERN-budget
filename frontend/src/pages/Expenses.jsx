@@ -11,6 +11,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import PaginateTable from "../components/PaginateTable";
+import { currencyFormatter, progressBarColor } from "../components/Formatter";
 
 export default function Expenses() {
   const { expenses, dispatchExpense } = useExpenseContext();
@@ -68,9 +69,12 @@ export default function Expenses() {
                 <Card.Text>
                   <ProgressBar
                     className="mt-4 mb-5 mx-auto w-75"
-                    now={800}
-                    max={1000}
-                    variant="danger"
+                    now={user.budgets.totalSpending}
+                    max={user.budgets.totalBudget}
+                    variant={progressBarColor(
+                      user.budgets.totalSpending,
+                      user.budgets.totalBudget
+                    )}
                   />
                   <div className="d-flex justify-content-around mx-5">
                     <div className="w-50">
@@ -83,10 +87,7 @@ export default function Expenses() {
                     <div className="w-50">
                       {spending?.map((item) => (
                         <p className="text-end " key={item._id}>
-                          {Intl.NumberFormat("en-US", {
-                            style: "currency",
-                            currency: "USD",
-                          }).format(item.total)}
+                          {currencyFormatter.format(item.total)}
                         </p>
                       ))}
                     </div>

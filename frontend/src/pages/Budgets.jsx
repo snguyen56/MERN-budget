@@ -38,6 +38,12 @@ export default function Budgets() {
             ...renamedData.find((budget) => item.name === budget.name),
           }));
           setBudgetAmount(newData);
+          // console.log("Budgets: ", budgetAmount);
+          // let sum = 0;
+          // newData.forEach((element) => {
+          //   sum += element.budget;
+          // });
+          // console.log("sum: ", sum);
         }
 
         //Grab expense data
@@ -49,7 +55,7 @@ export default function Budgets() {
         const expenseData = await expensesResponse.json();
         if (expensesResponse.ok) {
           setMonthlyExpenses(expenseData);
-          console.log("Budget Expense List: ", chosenExpenses);
+          // console.log("Budget Expense List: ", chosenExpenses);
           setChosenExpenses(monthlyExpenses);
         }
       };

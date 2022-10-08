@@ -29,11 +29,49 @@ export default function Dashboard() {
   const { incomes, dispatchIncome } = useIncomeContext();
   const { expenses, dispatchExpense } = useExpenseContext();
   const { state, setIncome, setExpense } = useProfitContext();
-  const { user } = useAuthContext();
+  const [budgetAmount, setBudgetAmount] = useState(null);
+  const { user, dispatchAuth } = useAuthContext();
 
   const [deleteList, setDeleteList] = useState([]);
   const [taskList, setTaskList] = useState(user.user.tasks);
   // console.log("Task State: ", taskList);
+
+  useEffect(() => {
+    const fetchBudget = async () => {
+      //Grab budgets data
+      const budgetsResponse = await fetch("/api/expense/category", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await budgetsResponse.json();
+      if (budgetsResponse.ok) {
+        // setBudgetAmount(data);
+        const renamedData = data.map(({ _id, ...e }) => ({
+          ...e,
+          name: _id,
+        }));
+        const newData = user.user.budgets.map((item) => ({
+          ...item,
+          ...renamedData.find((budget) => item.name === budget.name),
+        }));
+        setBudgetAmount(newData);
+        console.log("Budgets: ", budgetAmount);
+        let totalBudget = 0;
+        let totalSpending = 0;
+        newData.forEach((element) => {
+          totalBudget += element.budget;
+          totalSpending = element.total
+            ? (totalSpending += element.total)
+            : totalSpending;
+        });
+        const budgetData = { totalBudget, totalSpending };
+        console.log(budgetData);
+        dispatchAuth({ type: "SET_BUDGET", payload: budgetData });
+      }
+    };
+    fetchBudget();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,7 +125,7 @@ export default function Dashboard() {
     if (user) {
       fetchData();
     }
-  }, [dispatchIncome, dispatchExpense, user]);
+  }, [setBudgetAmount, dispatchIncome, dispatchExpense, user]);
 
   // Add/Remove checked item from list
   const handleCheck = (event) => {
@@ -142,33 +180,38 @@ export default function Dashboard() {
               <SumCard title="Gross Profit" data={state.profit} />
             </Col>
             <Col sm={12} md={6}>
-              <Card style={{ height: "21vh" }}>
-                <Card.Body>
-                  <Card.Title className="d-flex justify-content-between align-items-baseline">
-                    <div>Total Budget</div>
-                    <div>
-                      <span className="fs-6">
-                        {currencyFormatter.format(500)}
-                      </span>{" "}
-                      / {currencyFormatter.format(1000)}
-                    </div>
-                  </Card.Title>
-                  <ProgressBar
-                    className="mt-5"
-                    now={500}
-                    max={1000}
-                    variant={progressBarColor(500, 1000)}
-                  />
-                </Card.Body>
-                <Button
-                  className="text-end pb-3 pe-4"
-                  variant="link"
-                  as={Link}
-                  to="/budgets"
-                >
-                  See all budgets
-                </Button>
-              </Card>
+              {user.budgets && (
+                <Card style={{ height: "21vh" }}>
+                  <Card.Body>
+                    <Card.Title className="d-flex justify-content-between align-items-baseline">
+                      <div>Total Budget</div>
+                      <div>
+                        <span className="fs-6">
+                          {currencyFormatter.format(user.budgets.totalSpending)}
+                        </span>{" "}
+                        / {currencyFormatter.format(user.budgets.totalBudget)}
+                      </div>
+                    </Card.Title>
+                    <ProgressBar
+                      className="mt-5"
+                      now={user.budgets.totalSpending}
+                      max={user.budgets.totalBudget}
+                      variant={progressBarColor(
+                        user.budgets.totalSpending,
+                        user.budgets.totalBudget
+                      )}
+                    />
+                  </Card.Body>
+                  <Button
+                    className="text-end pb-3 pe-4"
+                    variant="link"
+                    as={Link}
+                    to="/budgets"
+                  >
+                    See all budgets
+                  </Button>
+                </Card>
+              )}
             </Col>
           </Row>
         </Col>
