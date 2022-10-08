@@ -88,6 +88,7 @@ const getMonthlyExpenseSum = async (req, res) => {
   }
   res.status(200).json(expenses);
 };
+
 const getExpensesCategory = async (req, res) => {
   const user_id = req.user._id;
   const expense = await Expense.aggregate([
@@ -99,6 +100,97 @@ const getExpensesCategory = async (req, res) => {
     {
       $group: {
         _id: "$category",
+        total: {
+          $sum: "$amount",
+        },
+      },
+    },
+  ]).sort("-total");
+  if (expense.length == 0) {
+    return res.status(404).json({ error: "No expense data available" });
+  }
+  res.status(200).json(expense);
+};
+
+const getMonthlyExpensesCategory = async (req, res) => {
+  const user_id = req.user._id;
+  var date = new Date();
+  var start = new Date(date.getFullYear(), date.getMonth(), 1);
+  var end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  const expense = await Expense.aggregate([
+    {
+      $match: {
+        user_id: user_id.toString(),
+        date: {
+          $gte: start,
+          $lt: end,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$category",
+        total: {
+          $sum: "$amount",
+        },
+      },
+    },
+  ]).sort("-total");
+  if (expense.length == 0) {
+    return res.status(404).json({ error: "No expense data available" });
+  }
+  res.status(200).json(expense);
+};
+
+const getYearlyExpenses = async (req, res) => {
+  const user_id = req.user._id;
+  var date = new Date();
+  var start = new Date(date.getFullYear(), 1, 1);
+  var end = new Date(date.getFullYear() + 1, 1, 1);
+  const expense = await Expense.aggregate([
+    {
+      $match: {
+        user_id: user_id.toString(),
+        date: {
+          $gte: start,
+          $lt: end,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $dateToString: { format: "%Y-%m", date: "$date" } },
+        total: {
+          $sum: "$amount",
+        },
+      },
+    },
+  ]).sort("-total");
+  if (expense.length == 0) {
+    return res.status(404).json({ error: "No expense data available" });
+  }
+  res.status(200).json(expense);
+};
+
+const getWeeklyExpenses = async (req, res) => {
+  const user_id = req.user._id;
+  var date = new Date();
+  var start = new Date(date.getFullYear(), date.getMonth(), 1);
+  var end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  const expense = await Expense.aggregate([
+    {
+      $match: {
+        user_id: user_id.toString(),
+        date: {
+          $gte: start,
+          $lt: end,
+        },
+      },
+    },
+
+    {
+      $group: {
+        _id: { "weekly": { "$week": "$date" } },
         total: {
           $sum: "$amount",
         },
@@ -167,4 +259,7 @@ module.exports = {
   getMonthlyExpenses,
   getMonthlyExpenseSum,
   getExpensesCategory,
+  getMonthlyExpensesCategory,
+  getWeeklyExpenses,
+  getYearlyExpenses,
 };

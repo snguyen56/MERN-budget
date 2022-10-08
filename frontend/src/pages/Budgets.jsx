@@ -21,7 +21,7 @@ export default function Budgets() {
     () => {
       const fetchData = async () => {
         //Grab budgets data
-        const budgetsResponse = await fetch("/api/expense/category", {
+        const budgetsResponse = await fetch("/api/expense/category/month", {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
