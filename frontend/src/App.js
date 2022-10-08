@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Budgets from "./pages/Budgets";
 import { useAuthContext } from "./hooks/useAuthContext";
+import TopNav from "./components/TopNav";
 
 function App() {
   const { user } = useAuthContext();
@@ -20,6 +21,7 @@ function App() {
         <Sidebar />
       </div>
       <div className="content">
+        <TopNav />
         <Routes>
           <Route
             path="/"
