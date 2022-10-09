@@ -33,7 +33,10 @@ export default function AddExpenses(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("category is: ", category);
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
 
     const data = { title, amount, category, date };
     data.date = data.date.replace(/-/g, "/");

@@ -251,13 +251,14 @@ export default function Dashboard() {
                           user.budgets.totalBudget
                         )}
                       />
-                      {Intl.NumberFormat("en-US", {
-                        style: "percent",
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2,
-                      }).format(
-                        user.budgets.totalSpending / user.budgets.totalBudget
-                      )}{" "}
+                      {user.budgets.totalSpending &&
+                        Intl.NumberFormat("en-US", {
+                          style: "percent",
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 2,
+                        }).format(
+                          user.budgets.totalSpending / user.budgets.totalBudget
+                        )}{" "}
                       of Budget Spent
                     </Card.Text>
                   </Card.Body>

@@ -78,7 +78,6 @@ export default function LineChart(props) {
               }
             }
           });
-          console.log(dataArray);
           return dataArray[index];
         }),
         backgroundColor: "rgba(53, 162, 235, 0.5)",

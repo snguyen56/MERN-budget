@@ -25,12 +25,6 @@ export default function AddTask({ addTaskItem }) {
       return;
     }
 
-    // const data = { name, _id: "asdfasfwefsafg123143" };
-    // addTaskItem(data);
-    // console.log(JSON.stringify(data));
-    // setName("");
-    // setShow(false);
-
     const data = { name };
 
     const response = await fetch("/api/user/task", {

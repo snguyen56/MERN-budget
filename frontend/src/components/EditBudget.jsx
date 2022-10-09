@@ -22,6 +22,11 @@ export default function EditBudget({ data }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
+
     const data = { name, budget, _id };
 
     const response = await fetch("/api/user/budget", {

@@ -73,7 +73,7 @@ export default function Budgets() {
     <Container fluid className="mt-4">
       <Row>
         <Col md={12} lg={12} xl={4}>
-          {budgetAmount &&
+          {budgetAmount ? (
             budgetAmount.map((budget) => (
               <Card
                 key={budget.name}
@@ -108,7 +108,10 @@ export default function Budgets() {
                   </Card.Text>
                 </Card.Body>
               </Card>
-            ))}
+            ))
+          ) : (
+            <p>no budgets found</p>
+          )}
         </Col>
         <Col>
           <Card className="h-100">

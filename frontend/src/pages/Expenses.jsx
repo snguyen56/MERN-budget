@@ -11,14 +11,21 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useExpenseContext } from "../hooks/useExpenseContext";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import PaginateTable from "../components/PaginateTable";
-import { currencyFormatter, progressBarColor } from "../components/Formatter";
+import {
+  percentFormatter,
+  currencyFormatter,
+  progressBarColor,
+} from "../components/Formatter";
 import AddExpenses from "../components/AddExpenses";
+import { useProfitContext } from "../hooks/useProfitContext";
 
 export default function Expenses() {
   const { expenses, dispatchExpense } = useExpenseContext();
-
   const { user } = useAuthContext();
   const [spending, setSpending] = useState(null);
+  const { state } = useProfitContext();
+
+  const [lastMonth, setLastMonth] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [expensePerPage] = useState(6);
@@ -35,6 +42,18 @@ export default function Expenses() {
       const data = await expenseResponse.json();
       if (expenseResponse.ok) {
         setSpending(data);
+      }
+
+      //Grab last month's data
+      const monthResponse = await fetch("/api/month", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const monthData = await monthResponse.json();
+      if (monthResponse.ok && monthData[0]) {
+        setLastMonth(monthData[0].total_income);
+        console.log("last month", lastMonth);
       }
     };
     if (user) {
@@ -116,26 +135,71 @@ export default function Expenses() {
           </Card>
         </Col>
       </Row>
-      <Row className="my-4">
-        <Col className="d-lg-flex flex-lg-column justify-content-lg-between">
-          <Card style={{ height: "20%" }}>
+      <Row className="my-4 card-height">
+        <Col
+          lg={6}
+          xxl={2}
+          className="d-lg-flex flex-lg-column justify-content-lg-between"
+        >
+          <Card>
             <Card.Body>
-              <Card.Title>Placeholder</Card.Title>
+              <Card.Subtitle>This Month's Expense</Card.Subtitle>
+              <Card.Title className="my-1">
+                {currencyFormatter.format(state.expense)}
+              </Card.Title>
+              <Card.Text>
+                {lastMonth === null ? (
+                  <span
+                    className={
+                      percentFormatter.format(state.expense / lastMonth - 1) >=
+                      0
+                        ? "text-success"
+                        : "text-danger"
+                    }
+                  >
+                    {percentFormatter.format(state.expense / lastMonth - 1)}
+                  </span>
+                ) : (
+                  "No data"
+                )}{" "}
+                from last month
+              </Card.Text>
             </Card.Body>
           </Card>
-          <Card style={{ height: "20%" }}>
+          <Card>
             <Card.Body>
-              <Card.Title>Placeholder</Card.Title>
+              <Card.Subtitle>Last Month's Average</Card.Subtitle>
+              <Card.Title className="my-1">
+                {currencyFormatter.format(state.expense)}
+              </Card.Title>
+              <Card.Text>
+                {percentFormatter.format(lastMonth / state.expense - 1)} from
+                monthly avg
+              </Card.Text>
             </Card.Body>
           </Card>
-          <Card style={{ height: "20%" }}>
+          <Card>
             <Card.Body>
-              <Card.Title>Placeholder</Card.Title>
+              <Card.Subtitle>This Year's Total</Card.Subtitle>
+              <Card.Title className="my-1">
+                {currencyFormatter.format(state.expense)}
+              </Card.Title>
+              <Card.Text>
+                {percentFormatter.format(lastMonth / state.expense - 1)} from
+                last year
+              </Card.Text>
             </Card.Body>
           </Card>
-          <Card style={{ height: "20%" }}>
+          <Card>
             <Card.Body>
-              <Card.Title>Placeholder</Card.Title>
+              <Card.Subtitle>This Month's Savings</Card.Subtitle>
+              <Card.Title className="my-1">
+                {currencyFormatter.format(state.expense)}
+              </Card.Title>
+              <Card.Text>
+                {percentFormatter.format(lastMonth / state.expense - 1)} from
+                last month
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>

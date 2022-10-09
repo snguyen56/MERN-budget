@@ -27,6 +27,7 @@ export default function Income() {
   const [incomePerPage] = useState(6);
   const [yearlyData, setYearlyData] = useState([]);
 
+  // grab yearly income
   useEffect(() => {
     const fetchYearlyIncome = async () => {
       const incomeResponse = await fetch("/api/income/year", {
@@ -55,7 +56,6 @@ export default function Income() {
       const data = await budgetsResponse.json();
       if (budgetsResponse.ok) {
         setIncome(data);
-        // console.log(data);
       }
 
       //Grab last month's data

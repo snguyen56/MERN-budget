@@ -55,10 +55,6 @@ const getMonthlyIncomeSum = async (req, res) => {
     {
       $match: {
         user_id: user_id.toString(),
-      },
-    },
-    {
-      $match: {
         date: {
           $gte: start,
           $lt: end,
@@ -67,7 +63,7 @@ const getMonthlyIncomeSum = async (req, res) => {
     },
     {
       $group: {
-        _id: null, //change to user ID
+        _id: null,
         total: {
           $sum: "$amount",
         },
@@ -96,10 +92,6 @@ const getMonthlyIncomes = async (req, res) => {
     .equals(user_id)
     .sort({ date: -1 });
   res.status(200).json(incomes);
-
-  // const user_id = req.user._id;
-  // const incomes = await Income.find({ user_id }).sort({ createdAt: -1 });
-  // res.status(200).json(incomes);
 };
 
 // get all incomes split by category

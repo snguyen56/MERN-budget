@@ -30,6 +30,11 @@ const EditButton = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
+
     const data = { title, amount, category, date };
     data.date = data.date.replace(/-/g, "/");
     const response = await fetch("api/" + props.type + "/" + props.data._id, {
