@@ -29,7 +29,6 @@ export default function Budgets() {
         });
         const data = await budgetsResponse.json();
         if (budgetsResponse.ok) {
-          // setBudgetAmount(data);
           const renamedData = data.map(({ _id, ...e }) => ({
             ...e,
             name: _id,
@@ -115,7 +114,7 @@ export default function Budgets() {
           <Card className="h-100">
             <Card.Body>
               <Card.Title>{budget}</Card.Title>
-              <Table striped bordered hover>
+              <Table className="overflow-auto" striped bordered hover>
                 <thead>
                   <tr>
                     <th>#</th>

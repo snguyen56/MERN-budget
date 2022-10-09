@@ -173,7 +173,7 @@ const getYearlyExpenses = async (req, res) => {
         },
       },
     },
-  ]).sort("-total");
+  ]).sort("_id");
   if (expense.length == 0) {
     return res.status(404).json({ error: "No expense data available" });
   }

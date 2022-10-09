@@ -77,7 +77,7 @@ export default function Expenses() {
                       user.budgets.totalBudget
                     )}
                   />
-                  <div className="d-flex justify-content-around mx-5">
+                  <div className="d-flex justify-content-around mx-5 fw-semibold">
                     <div className="w-50">
                       {spending?.map((item) => (
                         <p className="text-start " key={item._id}>
