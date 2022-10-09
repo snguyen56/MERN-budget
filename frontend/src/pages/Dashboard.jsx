@@ -38,12 +38,13 @@ export default function Dashboard() {
 
   const [deleteList, setDeleteList] = useState([]);
   const [taskList, setTaskList] = useState(user.user.tasks);
+  const [weeklyData, setWeeklyData] = useState([]);
   // console.log("Task State: ", taskList);
 
   useEffect(() => {
     const fetchBudget = async () => {
       //Grab budgets data
-      const budgetsResponse = await fetch("/api/expense/category", {
+      const budgetsResponse = await fetch("/api/expense/category/month", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -71,6 +72,22 @@ export default function Dashboard() {
         const budgetData = { totalBudget, totalSpending };
         console.log(budgetData);
         dispatchAuth({ type: "SET_BUDGET", payload: budgetData });
+      }
+    };
+    fetchBudget();
+  }, []);
+
+  useEffect(() => {
+    const fetchBudget = async () => {
+      //Grab budgets data
+      const budgetsResponse = await fetch("/api/expense/week", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await budgetsResponse.json();
+      if (budgetsResponse.ok) {
+        setWeeklyData(data);
       }
     };
     fetchBudget();
@@ -168,7 +185,9 @@ export default function Dashboard() {
             <Card.Body>
               <Card.Title>This Month's Spending</Card.Title>
               <div style={{ height: "40vh" }}>
-                <LineChart />
+                {weeklyData && (
+                  <LineChart incomeData={weeklyData} expenseData={weeklyData} />
+                )}
               </div>
             </Card.Body>
           </Card>

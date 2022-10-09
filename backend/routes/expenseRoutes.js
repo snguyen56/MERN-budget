@@ -12,6 +12,9 @@ const {
   getMonthlyExpenses,
   getMonthlyExpenseSum,
   getExpensesCategory,
+  getMonthlyExpensesCategory,
+  getWeeklyExpenses,
+  getYearlyExpenses,
 } = require("../controllers/expenseController");
 
 const requireAuth = require("../middleware/requireAuth");
@@ -19,6 +22,12 @@ const requireAuth = require("../middleware/requireAuth");
 router.use(requireAuth);
 
 router.get("/category", getExpensesCategory);
+
+router.get("/week", getWeeklyExpenses);
+
+router.get("/year", getYearlyExpenses);
+
+router.get("/category/month", getMonthlyExpensesCategory);
 
 router.get("/sum", getExpenseSum);
 
