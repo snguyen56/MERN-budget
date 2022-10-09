@@ -95,11 +95,6 @@ const AddIncome = () => {
                   value={amount}
                 />
               </InputGroup>
-              {error && (
-                <Form.Text className="text-danger" variant="primary">
-                  {error}
-                </Form.Text>
-              )}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Category</Form.Label>
@@ -122,6 +117,11 @@ const AddIncome = () => {
                 value={date}
               />
             </Form.Group>
+            {error && (
+              <Form.Text className="text-danger" variant="primary">
+                {error.replaceAll("Path ", "")}
+              </Form.Text>
+            )}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>

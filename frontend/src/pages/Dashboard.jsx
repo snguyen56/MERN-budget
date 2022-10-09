@@ -27,7 +27,7 @@ import ExpenseDetails from "../components/ExpenseDetails";
 import AddTask from "../components/AddTask";
 import DeleteTask from "../components/DeleteTask";
 import SumCard from "../components/SumCard";
-import LineChart from "../components/LineChart";
+import DoubleLineChart from "../components/DoubleLineChart";
 
 export default function Dashboard() {
   const { incomes, dispatchIncome } = useIncomeContext();
@@ -41,9 +41,9 @@ export default function Dashboard() {
   const [weeklyData, setWeeklyData] = useState([]);
   // console.log("Task State: ", taskList);
 
+  //Grab budgets data
   useEffect(() => {
     const fetchBudget = async () => {
-      //Grab budgets data
       const budgetsResponse = await fetch("/api/expense/category/month", {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -77,9 +77,9 @@ export default function Dashboard() {
     fetchBudget();
   }, []);
 
+  //Grab weekly expenses
   useEffect(() => {
-    const fetchBudget = async () => {
-      //Grab budgets data
+    const fetchWeeklyExpenses = async () => {
       const budgetsResponse = await fetch("/api/expense/week", {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -90,7 +90,7 @@ export default function Dashboard() {
         setWeeklyData(data);
       }
     };
-    fetchBudget();
+    fetchWeeklyExpenses();
   }, []);
 
   useEffect(() => {
@@ -186,7 +186,10 @@ export default function Dashboard() {
               <Card.Title>This Month's Spending</Card.Title>
               <div style={{ height: "40vh" }}>
                 {weeklyData && (
-                  <LineChart incomeData={weeklyData} expenseData={weeklyData} />
+                  <DoubleLineChart
+                    incomeData={weeklyData}
+                    expenseData={weeklyData}
+                  />
                 )}
               </div>
             </Card.Body>
@@ -231,7 +234,11 @@ export default function Dashboard() {
                           user.budgets.totalBudget
                         )}
                       />
-                      {percentFormatter.format(
+                      {Intl.NumberFormat("en-US", {
+                        style: "percent",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2,
+                      }).format(
                         user.budgets.totalSpending / user.budgets.totalBudget
                       )}{" "}
                       of Budget Spent

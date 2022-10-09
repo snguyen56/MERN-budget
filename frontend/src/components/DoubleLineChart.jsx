@@ -2,7 +2,7 @@
 import { Chart as ChartJS } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 
-export default function LineChart(props) {
+export default function DoubleLineChart(props) {
   const options = {
     responsive: true,
     plugins: {
@@ -47,10 +47,20 @@ export default function LineChart(props) {
     labels,
     datasets: [
       {
-        label: "Data",
-        data: labels.map(() => Math.floor(Math.random() * 10)),
+        label: "Income",
+        data: labels.map((item, index) =>
+          props.incomeData[index] ? props.incomeData[index].total : 0
+        ),
         backgroundColor: "rgba(53, 162, 235, 0.5)",
         borderColor: "rgba(53, 162, 235, 0.5)",
+      },
+      {
+        label: "Expenses",
+        data: labels.map((item, index) =>
+          props.expenseData[index] ? props.expenseData[index].total : 0
+        ),
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "rgba(255, 99, 132, 0.5)",
       },
     ],
   };

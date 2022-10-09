@@ -129,7 +129,7 @@ export default function Budgets() {
                   <tbody>
                     {chosenExpenses.map((expense, index) => (
                       <tr>
-                        <td>{index}</td>
+                        <td>{index + 1}</td>
                         <td>{expense.title}</td>
                         <td>{expense.amount}</td>
                         <td>{expense.category}</td>

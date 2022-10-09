@@ -118,6 +118,7 @@ const getExpensesCategory = async (req, res) => {
   res.status(200).json(expense);
 };
 
+// get monthly expenses split by category
 const getMonthlyExpensesCategory = async (req, res) => {
   const user_id = req.user._id;
   var date = new Date();
@@ -148,6 +149,7 @@ const getMonthlyExpensesCategory = async (req, res) => {
   res.status(200).json(expense);
 };
 
+// get expenses from current year, split by month
 const getYearlyExpenses = async (req, res) => {
   const user_id = req.user._id;
   var date = new Date();
@@ -178,6 +180,7 @@ const getYearlyExpenses = async (req, res) => {
   res.status(200).json(expense);
 };
 
+// get expenses of current month, split by weeks
 const getWeeklyExpenses = async (req, res) => {
   const user_id = req.user._id;
   var date = new Date();
@@ -202,7 +205,7 @@ const getWeeklyExpenses = async (req, res) => {
         },
       },
     },
-  ]).sort("-total");
+  ]).sort("_id");
   if (expense.length == 0) {
     return res.status(404).json({ error: "No expense data available" });
   }
