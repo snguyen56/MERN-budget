@@ -38,7 +38,6 @@ export default function EditBudget({ data }) {
       setError(json.error);
       console.log(error);
     } else if (response.ok) {
-      setBudget("");
       setError(null);
       setShow(false);
       console.log("budget updated: ", json);
@@ -59,11 +58,6 @@ export default function EditBudget({ data }) {
             <Form.Group className="mb-3" controlId="formTitle">
               <Form.Label>Title</Form.Label>
               <Form.Control type="text" value={name} disabled />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formTitle">
-              <Form.Label>ID</Form.Label>
-              <Form.Control type="text" value={_id} disabled />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formAmount">

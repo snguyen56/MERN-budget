@@ -9,7 +9,7 @@ const PaginateTable = ({ dataPerPage, totalPosts, currentPage, paginate }) => {
   }
 
   return (
-    <Pagination>
+    <Pagination className="mb-0 ms-3">
       <Pagination.First onClick={() => paginate(1)} />
       <Pagination.Prev
         onClick={() =>

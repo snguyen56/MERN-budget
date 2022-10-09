@@ -21,8 +21,8 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 
 //custom components
 import Details from "../components/Details";
-import IncomeForm from "../components/IncomeForm";
-import AddForm from "../components/AddForm";
+import AddIncome from "../components/AddIncome";
+import AddExpenses from "../components/AddExpenses";
 import ExpenseDetails from "../components/ExpenseDetails";
 import AddTask from "../components/AddTask";
 import DeleteTask from "../components/DeleteTask";
@@ -50,7 +50,6 @@ export default function Dashboard() {
       });
       const data = await budgetsResponse.json();
       if (budgetsResponse.ok) {
-        // setBudgetAmount(data);
         const renamedData = data.map(({ _id, ...e }) => ({
           ...e,
           name: _id,
@@ -268,7 +267,7 @@ export default function Dashboard() {
               <Details incomes={incomes?.slice(0, 6)} />
             </Card.Body>
             <Card.Footer className="text-end">
-              <IncomeForm />
+              <AddIncome />
               <Button variant="link" as={Link} to="/income">
                 See more income
               </Button>
@@ -282,7 +281,7 @@ export default function Dashboard() {
               <ExpenseDetails expenses={expenses?.slice(0, 6)} />
             </Card.Body>
             <Card.Footer className="text-end">
-              <AddForm type="expense" />
+              <AddExpenses />
               <Button variant="link" as={Link} to="/expenses">
                 See more expenses
               </Button>

@@ -8,7 +8,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 
 const { useState } = require("react");
 
-export default function AddForm(props) {
+export default function AddExpenses(props) {
   const { dispatchExpense } = useExpenseContext();
   const { user } = useAuthContext();
 
@@ -37,9 +37,8 @@ export default function AddForm(props) {
 
     const data = { title, amount, category, date };
     data.date = data.date.replace(/-/g, "/");
-    const mode = props.type;
 
-    const response = await fetch("/api/" + mode, {
+    const response = await fetch("/api/expense", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -58,7 +57,7 @@ export default function AddForm(props) {
       setCategory("Misc");
       setDate("");
       setError(null);
-      console.log("new " + mode + " added:", json);
+      console.log("new expense added:", json);
       setShow(false);
       dispatchExpense({ type: "CREATE_EXPENSE", payload: json });
     }
@@ -66,7 +65,7 @@ export default function AddForm(props) {
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        Add {props.type}
+        Add Expense
       </Button>
       <Modal show={show} onHide={handleClose}>
         <Form onSubmit={handleSubmit}>

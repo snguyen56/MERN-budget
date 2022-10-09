@@ -13,6 +13,7 @@ import DoughnutChart from "../components/DoughnutChart";
 import LineChart from "../components/LineChart";
 import Details from "../components/Details";
 import PaginateTable from "../components/PaginateTable";
+import AddIncome from "../components/AddIncome";
 
 export default function Income() {
   const { incomes, dispatchIncome } = useIncomeContext();
@@ -167,6 +168,7 @@ export default function Income() {
               <Details incomes={currentIncome} />
             </Card.Body>
             <Card.Footer className="d-flex justify-content-end">
+              <AddIncome />
               <PaginateTable
                 dataPerPage={incomePerPage}
                 totalPosts={incomes.length}

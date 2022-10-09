@@ -12,6 +12,7 @@ import { useExpenseContext } from "../hooks/useExpenseContext";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import PaginateTable from "../components/PaginateTable";
 import { currencyFormatter, progressBarColor } from "../components/Formatter";
+import AddExpenses from "../components/AddExpenses";
 
 export default function Expenses() {
   const { expenses, dispatchExpense } = useExpenseContext();
@@ -128,6 +129,7 @@ export default function Expenses() {
               <Details expenses={currentExpense} />
             </Card.Body>
             <Card.Footer className="d-flex justify-content-end">
+              <AddExpenses />
               <PaginateTable
                 dataPerPage={expensePerPage}
                 totalPosts={expenses.length}

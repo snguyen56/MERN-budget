@@ -8,7 +8,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 const { useState } = require("react");
 
-const IncomeForm = () => {
+const AddIncome = () => {
   const { dispatchIncome } = useIncomeContext();
   const { user } = useAuthContext();
 
@@ -137,4 +137,4 @@ const IncomeForm = () => {
   );
 };
 
-export default IncomeForm;
+export default AddIncome;

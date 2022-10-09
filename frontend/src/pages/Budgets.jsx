@@ -39,12 +39,6 @@ export default function Budgets() {
             ...renamedData.find((budget) => item.name === budget.name),
           }));
           setBudgetAmount(newData);
-          // console.log("Budgets: ", budgetAmount);
-          // let sum = 0;
-          // newData.forEach((element) => {
-          //   sum += element.budget;
-          // });
-          // console.log("sum: ", sum);
         }
 
         //Grab expense data
@@ -59,8 +53,6 @@ export default function Budgets() {
           setMonthlyExpenses(expenseData);
           setChosenExpenses(expenseData);
         }
-        // console.log("chosen Expenses: ", chosenExpenses);
-        // console.log("monthly Expenses: ", monthlyExpenses);
       };
       if (user) {
         fetchData();
@@ -70,13 +62,13 @@ export default function Budgets() {
     [setBudgetAmount, user, setChosenExpenses, setMonthlyExpenses]
   );
 
-  // if (!chosenExpenses) {
-  //   return (
-  //     <Spinner animation="border" role="status">
-  //       <span className="visually-hidden">Loading...</span>
-  //     </Spinner>
-  //   );
-  // }
+  if (!chosenExpenses) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
 
   return (
     <Container fluid className="mt-4">
