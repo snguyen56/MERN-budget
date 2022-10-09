@@ -41,14 +41,46 @@ export default function LineChart(props) {
     },
   };
 
-  const labels = ["Week 1", "Week 2", "Week 3", "Week 4"];
+  const labels = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  let dataArray = [];
 
   const data = {
     labels,
     datasets: [
       {
         label: "Data",
-        data: labels.map(() => Math.floor(Math.random() * 10)),
+        data: labels.map((item, index) => {
+          let monthIndex = index + 1;
+          props.data.forEach((month) => {
+            if (month) {
+              if (monthIndex.toString().length == 1) {
+                monthIndex = "0" + monthIndex.toString();
+              } else {
+                monthIndex = monthIndex.toString();
+              }
+              if (month._id.substring(5) === monthIndex) {
+                dataArray[index] = month.total;
+              } else {
+                if (!dataArray[index]) dataArray[index] = 0;
+              }
+            }
+          });
+          console.log(dataArray);
+          return dataArray[index];
+        }),
         backgroundColor: "rgba(53, 162, 235, 0.5)",
         borderColor: "rgba(53, 162, 235, 0.5)",
       },

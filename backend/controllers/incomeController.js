@@ -126,6 +126,69 @@ const getIncomeCategory = async (req, res) => {
   res.status(200).json(income);
 };
 
+// get income from current year, split by month
+const getYearlyIncomes = async (req, res) => {
+  const user_id = req.user._id;
+  var date = new Date();
+  var start = new Date(date.getFullYear(), 1, 1);
+  var end = new Date(date.getFullYear() + 1, 1, 1);
+  const income = await Income.aggregate([
+    {
+      $match: {
+        user_id: user_id.toString(),
+        date: {
+          $gte: start,
+          $lt: end,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $dateToString: { format: "%Y-%m", date: "$date" } },
+        total: {
+          $sum: "$amount",
+        },
+      },
+    },
+  ]).sort("-total");
+  if (income.length == 0) {
+    return res.status(404).json({ error: "No income data available" });
+  }
+  res.status(200).json(income);
+};
+
+// get income of current month, split by weeks
+const getWeeklyIncomes = async (req, res) => {
+  const user_id = req.user._id;
+  var date = new Date();
+  var start = new Date(date.getFullYear(), date.getMonth(), 1);
+  var end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  const income = await Income.aggregate([
+    {
+      $match: {
+        user_id: user_id.toString(),
+        date: {
+          $gte: start,
+          $lt: end,
+        },
+      },
+    },
+
+    {
+      $group: {
+        _id: { "weekly": { "$week": "$date" } },
+        total: {
+          $sum: "$amount",
+        },
+      },
+    },
+  ]).sort("_id");
+  if (income.length == 0) {
+    return res.status(404).json({ error: "No income data available" });
+  }
+  res.status(200).json(income);
+};
+
 // create income
 const createIncome = async (req, res) => {
   const { title, amount, category, date } = req.body;
@@ -186,4 +249,6 @@ module.exports = {
   getMonthlyIncomes,
   getMonthlyIncomeSum,
   getIncomeCategory,
+  getWeeklyIncomes,
+  getYearlyIncomes,
 };

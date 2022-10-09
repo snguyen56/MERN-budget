@@ -38,7 +38,8 @@ export default function Dashboard() {
 
   const [deleteList, setDeleteList] = useState([]);
   const [taskList, setTaskList] = useState(user.user.tasks);
-  const [weeklyData, setWeeklyData] = useState([]);
+  const [expenseWeeklyData, setExpenseWeeklyData] = useState([]);
+  const [incomeWeeklyData, setIncomeWeeklyData] = useState([]);
   // console.log("Task State: ", taskList);
 
   //Grab budgets data
@@ -87,10 +88,26 @@ export default function Dashboard() {
       });
       const data = await budgetsResponse.json();
       if (budgetsResponse.ok) {
-        setWeeklyData(data);
+        setExpenseWeeklyData(data);
       }
     };
     fetchWeeklyExpenses();
+  }, []);
+
+  //Grab weekly incomes
+  useEffect(() => {
+    const fetchWeeklyIncomes = async () => {
+      const budgetsResponse = await fetch("/api/income/week", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await budgetsResponse.json();
+      if (budgetsResponse.ok) {
+        setIncomeWeeklyData(data);
+      }
+    };
+    fetchWeeklyIncomes();
   }, []);
 
   useEffect(() => {
@@ -185,10 +202,10 @@ export default function Dashboard() {
             <Card.Body>
               <Card.Title>This Month's Spending</Card.Title>
               <div style={{ height: "40vh" }}>
-                {weeklyData && (
+                {expenseWeeklyData && incomeWeeklyData && (
                   <DoubleLineChart
-                    incomeData={weeklyData}
-                    expenseData={weeklyData}
+                    incomeData={incomeWeeklyData}
+                    expenseData={expenseWeeklyData}
                   />
                 )}
               </div>
