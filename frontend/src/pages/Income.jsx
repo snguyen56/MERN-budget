@@ -25,6 +25,24 @@ export default function Income() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [incomePerPage] = useState(6);
+  const [yearlyData, setYearlyData] = useState([]);
+
+  useEffect(() => {
+    const fetchYearlyIncome = async () => {
+      const incomeResponse = await fetch("/api/income/year", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await incomeResponse.json();
+      if (incomeResponse.ok) {
+        setYearlyData(data);
+      }
+    };
+    if (user) {
+      fetchYearlyIncome();
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +91,7 @@ export default function Income() {
             <Card.Body>
               <Card.Title>Yearly Income</Card.Title>
               <div style={{ height: "90%" }}>
-                <LineChart />
+                {yearlyData && <LineChart data={yearlyData} />}
               </div>
             </Card.Body>
           </Card>

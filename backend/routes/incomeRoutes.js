@@ -11,6 +11,8 @@ const {
   getMonthlyIncomes,
   getMonthlyIncomeSum,
   getIncomeCategory,
+  getWeeklyIncomes,
+  getYearlyIncomes,
 } = require("../controllers/incomeController");
 
 const requireAuth = require("../middleware/requireAuth");
@@ -20,6 +22,10 @@ const router = express.Router();
 router.use(requireAuth);
 
 router.get("/category", getIncomeCategory);
+
+router.get("/week", getWeeklyIncomes);
+
+router.get("/year", getYearlyIncomes);
 
 router.get("/sum", getIncomeSum);
 

@@ -22,17 +22,18 @@ export default function Expenses() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [expensePerPage] = useState(6);
+  const [yearlyData, setYearlyData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       //Grab budgets data
-      const budgetsResponse = await fetch("/api/expense/category", {
+      const expenseResponse = await fetch("/api/expense/category", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      const data = await budgetsResponse.json();
-      if (budgetsResponse.ok) {
+      const data = await expenseResponse.json();
+      if (expenseResponse.ok) {
         setSpending(data);
       }
     };
@@ -40,6 +41,22 @@ export default function Expenses() {
       fetchData();
     }
   }, [user]);
+
+  //Grab yearly expenses
+  useEffect(() => {
+    const fetchYearlyExpense = async () => {
+      const expenseResponse = await fetch("/api/expense/year", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await expenseResponse.json();
+      if (expenseResponse.ok) {
+        setYearlyData(data);
+      }
+    };
+    fetchYearlyExpense();
+  }, []);
 
   //Get Current Posts
   const indexOfLastIncome = currentPage * expensePerPage;
@@ -57,7 +74,7 @@ export default function Expenses() {
             <Card.Body>
               <Card.Title>Yearly Expense</Card.Title>
               <div style={{ height: "90%" }}>
-                <LineChart />
+                {yearlyData && <LineChart data={yearlyData} />}
               </div>
             </Card.Body>
           </Card>
