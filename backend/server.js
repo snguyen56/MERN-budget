@@ -22,12 +22,10 @@ app.use("/api/month", monthRoutes);
 app.use("/api/user", userRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.use(express.static(path.join(__dirname, "../backend/build")));
 
   app.get("*", (req, res) =>
-    res.sendFile(
-      path.resolve(__dirname, "../", "frontend", "build", "index.html")
-    )
+    res.sendFile(path.resolve(__dirname, "build", "index.html"))
   );
 } else {
   app.get("/", (req, res) => res.send("Not set to production"));
